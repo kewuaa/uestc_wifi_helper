@@ -41,9 +41,8 @@ static partial class UESTCWIFIHelper {
     static private string callback_string = "jQuery112409729861590799633_1698107269291";
 
     [Conditional("DEBUG")]
-    static private void Log(string s) {
-        Console.WriteLine(s);
-    }
+    static private void Log(string s) => Console.WriteLine(s);
+
     [LibraryImport("kernel32.dll")]
     static private partial IntPtr GetConsoleWindow();
 
