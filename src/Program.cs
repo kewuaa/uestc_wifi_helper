@@ -10,16 +10,16 @@ using Nett;
 
 namespace Kewuaa;
 
-[JsonSerializable(typeof(UESTCAutoLogin.ResponseDict))]
+[JsonSerializable(typeof(UESTCWIFIHelper.ResponseDict))]
 internal partial class ResponseDictSourceGenerationContext: JsonSerializerContext {}
 
 
 [JsonSourceGenerationOptions(WriteIndented = false)]
-[JsonSerializable(typeof(UESTCAutoLogin.LoginData))]
+[JsonSerializable(typeof(UESTCWIFIHelper.LoginData))]
 internal partial class LoginDataSourceGenerationContext: JsonSerializerContext {}
 
 
-static partial class UESTCAutoLogin {
+static partial class UESTCWIFIHelper {
     public class ResponseDict {
         public string? error {get; set;}
         public string? domain {get; set;}
