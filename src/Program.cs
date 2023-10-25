@@ -200,7 +200,7 @@ static partial class UESTCWIFIHelper {
         res_dict = ParseResponse(res);
         ok = res_dict.error == "ok";
         if (!ok) {
-            if (res_dict.error_msg == "INFO Error锛宔r_code=2") {
+            if (res_dict.error_msg == "INFO Error锛宔rr_code=2") {
                 Log("设备不在认证范围内");
                 return;
             }
