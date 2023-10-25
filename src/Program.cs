@@ -23,6 +23,7 @@ static partial class UESTCWIFIHelper {
     public class DeviceWithinScopeException: Exception {
         public DeviceWithinScopeException(): base("The device is not within the scope of certification") {}
     }
+
     public class ResponseDict {
         public string? error {get; set;}
         public string? domain {get; set;}
