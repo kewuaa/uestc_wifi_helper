@@ -20,6 +20,9 @@ internal partial class LoginDataSourceGenerationContext: JsonSerializerContext {
 
 
 static partial class UESTCWIFIHelper {
+    public class DeviceWithinScopeException: Exception {
+        public DeviceWithinScopeException(): base("The device is not within the scope of certification") {}
+    }
     public class ResponseDict {
         public string? error {get; set;}
         public string? domain {get; set;}
@@ -201,8 +204,8 @@ static partial class UESTCWIFIHelper {
         ok = res_dict.error == "ok";
         if (!ok) {
             if (res_dict.error_msg == "INFO Error锛宔rr_code=2") {
-                Log("设备不在认证范围内");
-                return;
+                Log("The device is not within the scope of certification");
+                throw new DeviceWithinScopeException();
             }
             throw new Exception($"Login failed: {res_dict.error_msg}");
         }
@@ -260,6 +263,8 @@ static partial class UESTCWIFIHelper {
         if (!online) {
             try {
                 Login(client, username.ToString()!, password.ToString()!, network_operator.ToString() ?? "dx", ip);
+            } catch (DeviceWithinScopeException) {
+                return;
             } catch (Exception e) {
                 MessageBox(0, e.ToString(), "错误", 0x00000000);
             }
