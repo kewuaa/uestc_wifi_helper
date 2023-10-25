@@ -236,6 +236,10 @@ static partial class UESTCWIFIHelper {
                 """
             ));
             MessageBox(0, $"你需要在 {config_file} 中保存你的用户名和密码等配置", "提醒", 0x00000000);
+            Process p = new();
+            p.StartInfo.FileName = "notepad";
+            p.StartInfo.Arguments = config_file;
+            p.Start();
             return;
         }
         var config = Toml.ReadFile(config_file);
