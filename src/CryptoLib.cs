@@ -4,6 +4,65 @@ using System.Security.Cryptography;
 namespace Kewuaa;
 
 static class CryptoLib {
+    static public string XEncode(string str, string key) {
+        if (str == "") {
+            return "";
+        }
+        Func<string, bool, List<int>> s = (a, b) => {
+            var c = a.Length;
+            List<int> v = new();
+            for (int i = 0; i < c; i += 4) {
+                int x = (int)a[i];
+                for (int j = 1; j < 4; j++) {
+                    if (i + j < c) {
+                        x |= (int)a[i + j] << (j * 8);
+                    } else break;
+                }
+                v.Add(x);
+            }
+            if (b) {
+                v.Add(c);
+            }
+            return v;
+        };
+        Func<List<int>, string> l = (a) => {
+            var d = a.Count;
+            StringBuilder b = new();
+            for (int i = 0; i < d; i++) {
+                string v = $"{(char)(a[i] & 0xff)}{(char)(a[i] >>> 8 & 0xff)}{(char)(a[i] >>> 16 & 0xff)}{(char)(a[i] >>> 24 & 0xff)}";
+                b.Append(v);
+            }
+            return b.ToString();
+        };
+        (var v, var k) = (s(str, true), s(key, false));
+        int k_len = k.Count < 4 ? 4 : k.Count;
+        int n = v.Count - 1;
+        int z = v[n];
+        int y = v[0];
+        int c = -1640531527;
+        int m, e, p;
+        double q = Math.Floor(6 + 52.0 / v.Count);
+        int d = 0;
+        while (0 < q--) {
+            d = d + c & (-1);
+            e = d >>> 2 & 3;
+            for (p = 0; p < n; p++) {
+                y = v[p + 1];
+                m = z >>> 5 ^ y << 2;
+                m += (y >>> 3 ^ z << 4) ^ (d ^ y);
+                m += k[(int)((p & 3) ^ e)] ^ z;
+                z = v[p] = v[p] + m & (-1);
+            }
+            y = v[0];
+            m = z >>> 5 ^ y << 2;
+            m += (y >>> 3 ^ z << 4) ^ (d ^ y);
+            m += k[(int)((p & 3) ^ e)] ^ z;
+            z = v[n] = v[n] + m & (-1);
+
+        }
+        return l(v);
+    }
+
     static public string GetSHA1(string s) {
         SHA1 sha1 = SHA1.Create();
         var data = sha1.ComputeHash(Encoding.UTF8.GetBytes(s));
