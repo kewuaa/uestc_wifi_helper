@@ -1,3 +1,13 @@
-# introduction
+# 介绍
 
-simple program to login uestc wifi
+一个用于登录泥电校园网的脚本。
+
+# 下载
+
+可在[发布页面](https://github.com/kewuaa/uestc_wifi_helper/releases)下载可执行文件。
+
+# 使用方法
+
+首次运行时会提示需要输入账号和密码，之后每次运行都会检测WiFi是否在线，若不在线会通过你输入的账号和密码登录连接校园网。
+
+可以把该程序设置成开机自启动运行或者设置一个定时任务，每隔一段时间运行。
