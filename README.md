@@ -4,7 +4,7 @@
 
 # 下载
 
-可在[发布页面](https://github.com/kewuaa/uestc_wifi_helper/releases)下载可执行文件。
+可在[发布页面](https://github.com/kewuaa/uestc_wifi_helper/releases)下载可执行文件。（目前只有Windows）
 
 # 使用方法
 
