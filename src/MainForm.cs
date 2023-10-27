@@ -13,9 +13,9 @@ class MainForm: Form {
                 Kewuaa.UESTCWIFIHelper.CheckedStatus.SuccessfullyLogin => "登陆WiFi成功",
                     Kewuaa.UESTCWIFIHelper.CheckedStatus.DeviceWithinScope => "设备不在范围内",
                     Kewuaa.UESTCWIFIHelper.CheckedStatus.NotConnected => "未连接WiFi或网线",
-                    _ => String.Empty,
+                    _ => null,
             };
-            if (msg != String.Empty) {
+            if (msg is not null) {
                 _notify_icon.ShowBalloonTip(1000, "INFO", msg, ToolTipIcon.Info);
             }
         } catch (Exception e) {
