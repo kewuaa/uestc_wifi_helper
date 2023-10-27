@@ -25,23 +25,23 @@ public class Program {
         if (!File.Exists(config_file)) {
             using FileStream fs = new FileStream(config_file, FileMode.Create);
             var content = Encoding.UTF8.GetBytes(
-                @"
-                username = ""your username""
+@"
+username = ""your username""
 
-                password = ""your password""
+password = ""your password""
 
-                # network operator of your wifi
-                # 电信: dx
-                # 移动: cmcc
-                # 默认为电信（移动未测试过，不知道能不能用）
-                network_operator = ""dx""
+# network operator of your wifi
+# 电信: dx
+# 移动: cmcc
+# 默认为电信（移动未测试过，不知道能不能用）
+network_operator = ""dx""
 
-                # 间隔多长时间检查一次网络
-                # 单位为小时
-                # 设置为非正数时相当于单独检查一次网络
-                # 默认为 6，即每隔 6 小时自动检查一次网络
-                check_interval = 6
-                "
+# 间隔多长时间检查一次网络
+# 单位为小时
+# 设置为非正数时相当于单独检查一次网络
+# 默认为 6，即每隔 6 小时自动检查一次网络
+check_interval = 6
+"
             );
             fs.Write(content, 0, content.Length);
             MessageBox(0, $"你需要在 {config_file} 中保存你的用户名和密码等配置", "提醒", 0x00000000);
