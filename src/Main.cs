@@ -1,12 +1,15 @@
+using System;
+using System.IO;
 using System.Text;
 using System.Diagnostics;
+using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
 using Nett;
 
-public partial class Program {
-    [LibraryImport("user32.dll", EntryPoint = "MessageBoxW", StringMarshalling = StringMarshalling.Utf16)]
-    static private partial int MessageBox(
+public class Program {
+    [DllImport("user32.dll", EntryPoint = "MessageBoxW", CharSet = CharSet.Auto)]
+    static private extern int MessageBox(
         int hWnd,
         [MarshalAs(UnmanagedType.LPWStr)]
         string text,
@@ -20,28 +23,29 @@ public partial class Program {
         var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         var config_file = Path.Combine(home, "uestc_wifi.toml");
         if (!File.Exists(config_file)) {
-            using FileStream fs = new(config_file, FileMode.Create);
-            fs.Write(Encoding.UTF8.GetBytes(
-                """
-                username = "your username"
+            using FileStream fs = new FileStream(config_file, FileMode.Create);
+            var content = Encoding.UTF8.GetBytes(
+                @"
+                username = ""your username""
 
-                password = "your password"
+                password = ""your password""
 
                 # network operator of your wifi
                 # 电信: dx
                 # 移动: cmcc
                 # 默认为电信（移动未测试过，不知道能不能用）
-                network_operator = "dx"
+                network_operator = ""dx""
 
                 # 间隔多长时间检查一次网络
                 # 单位为小时
                 # 设置为非正数时相当于单独检查一次网络
                 # 默认为 6，即每隔 6 小时自动检查一次网络
                 check_interval = 6
-                """
-            ));
+                "
+            );
+            fs.Write(content, 0, content.Length);
             MessageBox(0, $"你需要在 {config_file} 中保存你的用户名和密码等配置", "提醒", 0x00000000);
-            Process p = new();
+            Process p = new Process();
             p.StartInfo.FileName = "notepad";
             p.StartInfo.Arguments = config_file;
             p.Start();
@@ -61,7 +65,7 @@ public partial class Program {
         var network_operator = config.TryGetValue("network_operator")?.Get<string>();
         var check_interval = config.TryGetValue("check_interval")?.Get<int>() ?? 6;
 
-        Kewuaa.UESTCWIFIHelper helper = new(username.Get<string>(), password.Get<string>(), network_operator);
+        var helper = new Kewuaa.UESTCWIFIHelper(username.Get<string>(), password.Get<string>(), network_operator);
         if (check_interval <= 0) {
             try {
                 var status = helper.Check().Result;

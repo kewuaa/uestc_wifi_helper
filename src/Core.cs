@@ -1,19 +1,11 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using System.Diagnostics;
 
-namespace Kewuaa;
-
-[JsonSerializable(typeof(UESTCWIFIHelper.ResponseDict))]
-internal partial class ResponseDictSourceGenerationContext: JsonSerializerContext {}
-
-
-[JsonSourceGenerationOptions(WriteIndented = false)]
-[JsonSerializable(typeof(UESTCWIFIHelper.LoginData))]
-internal partial class LoginDataSourceGenerationContext: JsonSerializerContext {}
-
+namespace Kewuaa {
 
 public class UESTCWIFIHelper {
     public class DeviceWithinScopeException: Exception {
@@ -28,21 +20,21 @@ public class UESTCWIFIHelper {
     }
 
     public class ResponseDict {
-        public string? error {get; set;}
-        public string? domain {get; set;}
-        public string? error_msg {get; set;}
-        public string? user_name {get; set;}
-        public string? online_ip {get; set;}
-        public string? client_ip {get; set;}
-        public string? challenge {get; set;}
+        public string error {get; set;}
+        public string domain {get; set;}
+        public string error_msg {get; set;}
+        public string user_name {get; set;}
+        public string online_ip {get; set;}
+        public string client_ip {get; set;}
+        public string challenge {get; set;}
     }
 
     public class LoginData {
-        public string? username {get; set;}
-        public string? password {get; set;}
-        public string? ip {get; set;}
-        public string? acid {get; set;}
-        public string? enc_ver {get; set;}
+        public string username {get; set;}
+        public string password {get; set;}
+        public string ip {get; set;}
+        public string acid {get; set;}
+        public string enc_ver {get; set;}
     }
 
     static private string _callback_string = "jQuery112409729861590799633_1698107269291";
@@ -59,7 +51,7 @@ public class UESTCWIFIHelper {
             throw new Exception("Error response message");
         }
         string json_str = res_text.Substring(_callback_string.Length + 1, res_text.Length - _callback_string.Length - 2);
-        var json = JsonSerializer.Deserialize<ResponseDict>(json_str, ResponseDictSourceGenerationContext.Default.ResponseDict);
+        var json = JsonSerializer.Deserialize<ResponseDict>(json_str);
         if (json is null) {
             throw new Exception("Deserialize json string failed");
         }
@@ -73,7 +65,7 @@ public class UESTCWIFIHelper {
 
     private async Task<bool> CheckConnect() {
         string url = "http://10.253.0.235/srun_portal_success?ac_id=3&theme=yd";
-        HttpRequestMessage request = new(HttpMethod.Get, url);
+        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
         var res = await _client.SendAsync(request);
         try {
             res.EnsureSuccessStatusCode();
@@ -87,7 +79,7 @@ public class UESTCWIFIHelper {
     private async Task<(bool, string)> CheckOnline() {
         var time = GetTimeStamp();
         string url = $"http://10.253.0.235/cgi-bin/rad_user_info?callback={_callback_string}&_={time}";
-        HttpRequestMessage request = new(HttpMethod.Get, url);
+        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
         var res = await _client.SendAsync(request);
         var res_dict = await ParseResponse(res);
         string msg = res_dict.error!;
@@ -106,9 +98,9 @@ public class UESTCWIFIHelper {
     }
 
     private async Task Login(string client_ip) {
-        LoginData data = new() {username = $"{_username}@{_network_operator}", password = _password, ip = client_ip, acid = "3", enc_ver = "srun_bx1"};
+        LoginData data = new LoginData() {username = $"{_username}@{_network_operator}", password = _password, ip = client_ip, acid = "3", enc_ver = "srun_bx1"};
         string url = $"http://10.253.0.235/cgi-bin/get_challenge?callback={_callback_string}&username={data.username}&ip={client_ip}&_={GetTimeStamp()}";
-        HttpRequestMessage request = new(HttpMethod.Get, url);
+        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
         var res = await _client.SendAsync(request);
         var res_dict = await ParseResponse(res);
         var ok = res_dict.error == "ok";
@@ -116,7 +108,8 @@ public class UESTCWIFIHelper {
             throw new Exception($"Fetch challenge failed: {res_dict.error_msg}");
         }
         var token = res_dict.challenge!;
-        var str = JsonSerializer.Serialize<LoginData>(data, LoginDataSourceGenerationContext.Default.LoginData);
+        var opts = new JsonSerializerOptions() {WriteIndented = false};
+        var str = JsonSerializer.Serialize<LoginData>(data, opts);
         string info = $"{{SRBX1}}{CryptoLib.Base64.Encode(CryptoLib.XEncode(str, token))}";
         string password_md5 = CryptoLib.GetHMACMD5(_password, token);
         string chksum_str = $"{token}{data.username}{token}{password_md5}{token}3{token}{client_ip}{token}200{token}1{token}{info}";
@@ -125,7 +118,7 @@ public class UESTCWIFIHelper {
             + $"callback={_callback_string}&action=login&username={data.username}&password=%7BMD5%7D{password_md5}&"
             + $"ac_id=3&ip={client_ip}&chksum={chksum}&info={WebUtility.UrlEncode(info)}&"
             + $"n=200&type=1&os=Windows%2010&name=Windows&double_stack=0&_={GetTimeStamp()}";
-        request = new(HttpMethod.Get, url);
+        request = new HttpRequestMessage(HttpMethod.Get, url);
         res = await _client.SendAsync(request);
         res_dict = await ParseResponse(res);
         ok = res_dict.error == "ok";
@@ -153,14 +146,15 @@ public class UESTCWIFIHelper {
         }
     }
 
-    public UESTCWIFIHelper(string username, string password, string? network_operator) {
-        var handle = new SocketsHttpHandler();
+    public UESTCWIFIHelper(string username, string password, string network_operator) {
+        var handle = new HttpClientHandler();
         handle.CookieContainer.Add(new Cookie("lang", "zh-CN") {Domain = "10.253.0.235"});
-        _client = new(handle);
+        _client = new HttpClient(handle);
         _client.DefaultRequestHeaders.Add("Host", "10.253.0.235");
         _client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36");
         _username = username;
         _password = password;
         _network_operator = network_operator ?? "dx";
     }
+}
 }
