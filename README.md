@@ -1,10 +1,10 @@
 # 介绍
 
-一个用于登录泥电校园网的脚本。
+一个用于登录泥电校园网的脚本，支持电信和移动。
 
 # 下载
 
-可在[发布页面](https://github.com/kewuaa/uestc_wifi_helper/releases)下载可执行文件。（目前只有Windows， 版本需要高于Windows 10 1903）
+可在[发布页面](https://github.com/kewuaa/uestc_wifi_helper/releases)下载可执行文件。（版本需要高于Windows 10 1903）
 
 # 使用方法
 
@@ -18,7 +18,7 @@ password = "your password"
 # network operator of your wifi
 # 电信: dx
 # 移动: cmcc
-# 默认为电信（移动未测试过，不知道能不能用）
+# 默认为电信
 network_operator = "dx"
 
 # 间隔多长时间检查一次网络
