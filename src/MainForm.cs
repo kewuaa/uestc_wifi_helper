@@ -14,14 +14,22 @@ class MainForm: Form {
     private async Task CheckOnce() {
         try {
             var status = await _wifi_helper.Check();
-            var msg = status switch {
-                Kewuaa.UESTCWIFIHelper.CheckedStatus.SuccessfullyLogin => "登陆WiFi成功",
-                    Kewuaa.UESTCWIFIHelper.CheckedStatus.DeviceWithinScope => "设备不在范围内",
-                    Kewuaa.UESTCWIFIHelper.CheckedStatus.NotConnected => "未连接WiFi或网线",
-                    _ => null,
-            };
-            if (msg != null) {
-                _notify_icon.ShowBalloonTip(1000, "INFO", msg, ToolTipIcon.Info);
+            switch (status) {
+                case Kewuaa.UESTCWIFIHelper.CheckedStatus.StillOnline:
+                    break;
+                case Kewuaa.UESTCWIFIHelper.CheckedStatus.NotConnected:
+                    _notify_icon.ShowBalloonTip(1000, "INFO", "未连接WiFi或网线", ToolTipIcon.Info);
+                    await Task.Delay(3000);
+                    Exit(null, null);
+                    break;
+                case Kewuaa.UESTCWIFIHelper.CheckedStatus.SuccessfullyLogin:
+                    _notify_icon.ShowBalloonTip(1000, "INFO", "登录WiFi成功", ToolTipIcon.Info);
+                    break;
+                case Kewuaa.UESTCWIFIHelper.CheckedStatus.DeviceWithinScope:
+                    _notify_icon.ShowBalloonTip(1000, "INFO", "设备不在范围内", ToolTipIcon.Info);
+                    await Task.Delay(3000);
+                    Exit(null, null);
+                    break;
             }
         } catch (Exception e) {
             MessageBox.Show(e.ToString(), "错误");
@@ -29,6 +37,7 @@ class MainForm: Form {
     }
 
     private async Task Run() {
+        await Task.Delay(3000);
         while (true) {
             await CheckOnce();
             await Task.Delay(_interval);
@@ -71,7 +80,7 @@ class MainForm: Form {
         InitNotifyIcon();
 
         _wifi_helper = wifi_helper;
-        _interval = interval * 60 * 60 * 1000;
+        _interval = interval * 1000;
         _main_task = Run();
     }
 }
