@@ -22,7 +22,7 @@ password = "your password"
 network_operator = "dx"
 
 # 间隔多长时间检查一次网络
-# 单位为秒
+# 单位为秒，整数
 # 设置为非正数时相当于单独检查一次网络
 # 默认为 30，即每隔 30 秒自动检查一次网络
 check_interval = 30
