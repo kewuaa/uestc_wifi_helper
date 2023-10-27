@@ -33,7 +33,7 @@ password = ""your password""
 # network operator of your wifi
 # 电信: dx
 # 移动: cmcc
-# 默认为电信（移动未测试过，不知道能不能用）
+# 默认为电信
 network_operator = ""dx""
 
 # 间隔多长时间检查一次网络
