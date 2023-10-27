@@ -49,13 +49,25 @@ class MainForm: Form {
     }
 
     private void Exit(object sender, EventArgs e) {
+        _notify_icon.ShowBalloonTip(1000, "INFO", "UESTC WiFi 助手已退出", ToolTipIcon.Info);
         _notify_icon.Visible = false;
         Application.Exit();
     }
 
+    private void MainForm_Load(object sender, EventArgs e) {
+        this.BeginInvoke(new Action(
+            () => {
+                this.Visible = false;
+                this.Opacity = 1;
+            }
+        ));
+    }
+
     public MainForm(Kewuaa.UESTCWIFIHelper wifi_helper, int interval) {
+        this.Opacity = 0;
         this.WindowState = FormWindowState.Minimized;
         this.ShowInTaskbar = false;
+        this.Load += new EventHandler(MainForm_Load);
         InitNotifyIcon();
 
         _wifi_helper = wifi_helper;
