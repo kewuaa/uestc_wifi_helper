@@ -7,13 +7,11 @@ using System.Runtime.InteropServices;
 
 using Nett;
 
-public class Program {
+public static class Program {
     [DllImport("user32.dll", EntryPoint = "MessageBoxW", CharSet = CharSet.Auto)]
     static private extern int MessageBox(
         int hWnd,
-        [MarshalAs(UnmanagedType.LPWStr)]
         string text,
-        [MarshalAs(UnmanagedType.LPWStr)]
         string title,
         uint t
     );
@@ -65,15 +63,15 @@ check_interval = 30
         var network_operator = config.TryGetValue("network_operator")?.Get<string>();
         var check_interval = config.TryGetValue("check_interval")?.Get<int>() ?? 30;
 
-        var helper = new Kewuaa.UESTCWIFIHelper(username.Get<string>(), password.Get<string>(), network_operator);
+        var helper = new UESTCWIFIHelper(username.Get<string>(), password.Get<string>(), network_operator);
         if (check_interval <= 0) {
             try {
                 var status = helper.Check().Result;
                 string text = status switch {
-                    Kewuaa.UESTCWIFIHelper.CheckedStatus.StillOnline => "设备已在线",
-                    Kewuaa.UESTCWIFIHelper.CheckedStatus.NotConnected => "未连接WiFi或网线",
-                    Kewuaa.UESTCWIFIHelper.CheckedStatus.DeviceWithinScope => "设备不在范围内",
-                    Kewuaa.UESTCWIFIHelper.CheckedStatus.SuccessfullyLogin => "登录WiFi成功",
+                    UESTCWIFIHelper.CheckedStatus.StillOnline => "设备已在线",
+                    UESTCWIFIHelper.CheckedStatus.NotConnected => "未连接WiFi或网线",
+                    UESTCWIFIHelper.CheckedStatus.DeviceWithinScope => "设备不在范围内",
+                    UESTCWIFIHelper.CheckedStatus.SuccessfullyLogin => "登录WiFi成功",
                     _ => throw new Exception(),
                 };
                 MessageBox(0, text, "提示", 0x00000000);
@@ -81,7 +79,7 @@ check_interval = 30
                 MessageBox(0, e.ToString(), "错误", 0x00000000);
             }
         } else {
-            Application.Run(new UESTCWIFIHelper.MainForm(helper, check_interval));
+            Application.Run(new MainForm(helper, check_interval));
         }
     }
 }

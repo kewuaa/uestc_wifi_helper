@@ -3,10 +3,8 @@ using System.IO;
 using System.Windows.Forms;
 using System.Threading.Tasks;
 
-namespace UESTCWIFIHelper {
-
 class MainForm: Form {
-    private Kewuaa.UESTCWIFIHelper _wifi_helper;
+    private UESTCWIFIHelper _wifi_helper;
     private int _interval;
     private Task _main_task;
     private NotifyIcon _notify_icon = new NotifyIcon();
@@ -15,17 +13,17 @@ class MainForm: Form {
         try {
             var status = await _wifi_helper.Check();
             switch (status) {
-                case Kewuaa.UESTCWIFIHelper.CheckedStatus.StillOnline:
+                case UESTCWIFIHelper.CheckedStatus.StillOnline:
                     break;
-                case Kewuaa.UESTCWIFIHelper.CheckedStatus.NotConnected:
+                case UESTCWIFIHelper.CheckedStatus.NotConnected:
                     _notify_icon.ShowBalloonTip(1000, "INFO", "未连接WiFi或网线", ToolTipIcon.Info);
                     await Task.Delay(3000);
                     Exit(null, null);
                     break;
-                case Kewuaa.UESTCWIFIHelper.CheckedStatus.SuccessfullyLogin:
+                case UESTCWIFIHelper.CheckedStatus.SuccessfullyLogin:
                     _notify_icon.ShowBalloonTip(1000, "INFO", "登录WiFi成功", ToolTipIcon.Info);
                     break;
-                case Kewuaa.UESTCWIFIHelper.CheckedStatus.DeviceWithinScope:
+                case UESTCWIFIHelper.CheckedStatus.DeviceWithinScope:
                     _notify_icon.ShowBalloonTip(1000, "INFO", "设备不在范围内", ToolTipIcon.Info);
                     await Task.Delay(3000);
                     Exit(null, null);
@@ -65,14 +63,14 @@ class MainForm: Form {
 
     private void MainForm_Load(object sender, EventArgs e) {
         this.BeginInvoke(new Action(
-            () => {
-                this.Visible = false;
-                this.Opacity = 1;
-            }
-        ));
+                    () => {
+                    this.Visible = false;
+                    this.Opacity = 1;
+                    }
+                    ));
     }
 
-    public MainForm(Kewuaa.UESTCWIFIHelper wifi_helper, int interval) {
+    public MainForm(UESTCWIFIHelper wifi_helper, int interval) {
         this.Opacity = 0;
         this.WindowState = FormWindowState.Minimized;
         this.ShowInTaskbar = false;
@@ -83,5 +81,4 @@ class MainForm: Form {
         _interval = interval * 1000;
         _main_task = Run();
     }
-}
 }

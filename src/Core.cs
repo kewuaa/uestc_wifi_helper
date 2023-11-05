@@ -5,8 +5,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
-namespace Kewuaa {
-
 public class UESTCWIFIHelper {
     public class DeviceWithinScopeException: Exception {
         public DeviceWithinScopeException(): base("The device is not within the scope of certification") {}
@@ -156,5 +154,4 @@ public class UESTCWIFIHelper {
         _password = password;
         _network_operator = network_operator ?? "dx";
     }
-}
 }

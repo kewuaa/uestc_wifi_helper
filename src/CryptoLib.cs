@@ -3,8 +3,6 @@ using System.Text;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
-namespace Kewuaa {
-
 static class CryptoLib {
     static private int UnsignedRightShift(int x, int bit) => (int)((uint)x >> bit);
     static public string XEncode(string str, string key) {
@@ -113,5 +111,4 @@ static class CryptoLib {
             return b.ToString();
         }
     }
-}
 }
