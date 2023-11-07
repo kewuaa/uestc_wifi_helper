@@ -16,6 +16,16 @@ public static class Program {
         uint t
     );
 
+    [DllImport("user32.dll", EntryPoint = "MessageBoxTimeoutW", CharSet = CharSet.Auto)]
+    static private extern int MessageBoxTimeout(
+        int hWnd,
+        string text,
+        string title,
+        uint t,
+        int language_id,
+        int delay
+    );
+
     [STAThread]
     static public void Main() {
         var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -74,7 +84,7 @@ check_interval = 30
                     UESTCWIFIHelper.CheckedStatus.SuccessfullyLogin => "登录WiFi成功",
                     _ => throw new Exception(),
                 };
-                MessageBox(0, text, "提示", 0x00000000);
+                MessageBoxTimeout(0, text, "提示", 0x00000000, 0, 1000);
             } catch (Exception e) {
                 MessageBox(0, e.ToString(), "错误", 0x00000000);
             }
