@@ -20,7 +20,7 @@ password = "your password"
 # 寝室移动网: 1
 # 教研室网: 2
 # 教研室电信网: 3
-# 默认为寝室电网
+# 默认为寝室电信网
 network_operator = 0
 
 # 间隔多长时间检查一次网络
