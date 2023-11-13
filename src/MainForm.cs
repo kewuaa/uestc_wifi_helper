@@ -31,8 +31,12 @@ class MainForm: Form {
                     Exit(null, null);
                     break;
             }
+        } catch (UESTCWIFIHelper.IncorrectUsernameOrPasswordException) {
+            MessageBox.Show("账号或密码错误", "错误");
+            Exit(null, null);
         } catch (Exception e) {
-            MessageBox.Show(e.ToString(), "错误");
+            MessageBox.Show(e.Message, "错误");
+            Exit(null, null);
         }
     }
 

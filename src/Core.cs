@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using System.Net.NetworkInformation;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Diagnostics;
@@ -13,6 +12,10 @@ public class UESTCWIFIHelper {
 
     public class DeviceWithinScopeException: Exception {
         public DeviceWithinScopeException(): base("The device is not within the scope of certification") {}
+    }
+
+    public class IncorrectUsernameOrPasswordException: Exception {
+        public IncorrectUsernameOrPasswordException(): base("Incorrect username or password") {}
     }
 
     public enum NetworkOperator {
@@ -127,11 +130,16 @@ public class UESTCWIFIHelper {
         res_dict = await ParseResponse(res);
         ok = res_dict.error == "ok";
         if (!ok) {
-            if (res_dict.error_msg == "INFO Error锛宔rr_code=2") {
-                Log("The device is not within the scope of certification");
-                throw new DeviceWithinScopeException();
+            switch (res_dict.error_msg) {
+                case "INFO Error锛宔rr_code=2":
+                    Log("The device is not within the scope of certification");
+                    throw new DeviceWithinScopeException();
+                case "E2901: (Third party 1)bind_user2: ldap_bind error":
+                case "E2901: (Third party 1)ldap_first_entry error":
+                    Log("Incorrect username or password");
+                    throw new IncorrectUsernameOrPasswordException();
             }
-            throw new Exception($"Login failed: {res_dict.error_msg}");
+            throw new Exception($"error: {res_dict.error}\nerror_msg: {res_dict.error_msg}");
         }
         Log($"\"{client_ip}\" user: {data.username} successfully login");
     }

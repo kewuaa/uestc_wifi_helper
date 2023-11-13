@@ -116,8 +116,10 @@ check_interval = 30
                     _ => throw new Exception(),
                 };
                 MessageBoxTimeout(0, text, "提示", 0x00000000, 0, 1000);
+            } catch (UESTCWIFIHelper.IncorrectUsernameOrPasswordException) {
+                MessageBox(0, "账号或密码错误", "错误", 0x00000000);
             } catch (Exception e) {
-                MessageBox(0, e.ToString(), "错误", 0x00000000);
+                MessageBox(0, e.Message, "错误", 0x00000000);
             }
         } else {
             Application.Run(new MainForm(helper, check_interval));
