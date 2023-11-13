@@ -39,10 +39,12 @@ username = ""your username""
 password = ""your password""
 
 # network operator of your wifi
-# 电信: dx
-# 移动: cmcc
+# 寝室电信网: 0
+# 寝室移动网: 1
+# 教研室网: 2
+# 教研室电信网: 3
 # 默认为电信
-network_operator = ""dx""
+network_operator = 0
 
 # 间隔多长时间检查一次网络
 # 单位为秒
@@ -70,10 +72,31 @@ check_interval = 30
             MessageBox(0, $"未在 {config_file} 中读取到 password", "警告", 0x00000000);
             return;
         }
-        var network_operator = config.TryGetValue("network_operator")?.Get<string>();
+        UESTCWIFIHelper.NetworkOperator network_operator;
+        switch (config.TryGetValue("network_operator")?.Get<int>() ?? 0) {
+            case 0:
+                network_operator = UESTCWIFIHelper.NetworkOperator.CTCC;
+                break;
+            case 1:
+                network_operator = UESTCWIFIHelper.NetworkOperator.CMCC;
+                break;
+            case 2:
+                network_operator = UESTCWIFIHelper.NetworkOperator.UESTC;
+                break;
+            case 3:
+                network_operator = UESTCWIFIHelper.NetworkOperator.CTCC_UESTC;
+                break;
+            default:
+                MessageBox(0, $"{config_file} 中的配置项 `network_operator` 不合法", "警告", 0x00000000);
+                return;
+        }
         var check_interval = config.TryGetValue("check_interval")?.Get<int>() ?? 30;
 
-        var helper = new UESTCWIFIHelper(username.Get<string>(), password.Get<string>(), network_operator);
+        var helper = new UESTCWIFIHelper(
+            username.Get<string>(),
+            password.Get<string>(),
+            network_operator
+        );
         if (check_interval <= 0) {
             try {
                 var status = helper.Check().Result;

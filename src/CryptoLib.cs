@@ -101,12 +101,15 @@ static class CryptoLib {
                 b.Append($"{_ALPHA[b10 >> 18]}{_ALPHA[(b10 >> 12) & 63]}{_ALPHA[(b10 >> 6) & 63]}{_ALPHA[b10 & 63]}");
             }
             i = imax;
-            if (s.Length - imax == 1) {
-                b10 = (int)s[i] << 16;
-                b.Append($"{_ALPHA[b10 >> 18]}{_ALPHA[(b10 >> 12) & 63]}{_PADCHAR}{_PADCHAR}");
-            } else {
-                b10 = ((int)s[i] << 16) | ((int)s[i + 1] << 8);
-                b.Append($"{_ALPHA[b10 >> 18]}{_ALPHA[(b10 >> 12) & 63]}{_ALPHA[(b10 >> 6) & 63]}{_PADCHAR}");
+            switch (s.Length - imax) {
+                case 1:
+                    b10 = (int)s[i] << 16;
+                    b.Append($"{_ALPHA[b10 >> 18]}{_ALPHA[(b10 >> 12) & 63]}{_PADCHAR}{_PADCHAR}");
+                    break;
+                case 2:
+                    b10 = ((int)s[i] << 16) | ((int)s[i + 1] << 8);
+                    b.Append($"{_ALPHA[b10 >> 18]}{_ALPHA[(b10 >> 12) & 63]}{_ALPHA[(b10 >> 6) & 63]}{_PADCHAR}");
+                    break;
             }
             return b.ToString();
         }
