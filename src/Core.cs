@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Diagnostics;
@@ -71,16 +72,8 @@ public class UESTCWIFIHelper {
     private string _network_operator;
 
     private async Task<bool> CheckConnect() {
-        string url = $"http://{_target_ip}/srun_portal_success?ac_id={_ac_id}&theme=dx";
-        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
-        var res = await _client.SendAsync(request);
-        try {
-            res.EnsureSuccessStatusCode();
-        } catch (System.Net.Http.HttpRequestException) {
-            Log("Not connected to network cable or WiFi");
-            return false;
-        }
-        return true;
+        var p = new Ping();
+        return (await p.SendPingAsync(_target_ip)).Status == IPStatus.Success;
     }
 
     private async Task<(bool, string)> CheckOnline() {
@@ -141,6 +134,7 @@ public class UESTCWIFIHelper {
 
     public async Task<CheckedStatus> Check() {
         if (!await CheckConnect()) {
+            Log("Not connected to network cable or WiFi");
             return CheckedStatus.NotConnected;
         }
         var (online, ip) = await CheckOnline();
