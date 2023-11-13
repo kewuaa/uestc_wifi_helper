@@ -75,8 +75,9 @@ public class UESTCWIFIHelper {
     private string _network_operator;
 
     private async Task<bool> CheckConnect() {
-        var p = new Ping();
-        return (await p.SendPingAsync(_target_ip)).Status == IPStatus.Success;
+        var request = new HttpRequestMessage(HttpMethod.Get, $"http://{_target_ip}");
+        var res = await _client.SendAsync(request);
+        return ((int)res.StatusCode) < 400;
     }
 
     private async Task<(bool, string)> CheckOnline() {
