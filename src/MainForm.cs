@@ -11,14 +11,16 @@ class MainForm: Form {
 
     private async Task CheckOnce() {
         try {
-            var status = await _wifi_helper.Check();
+            UESTCWIFIHelper.CheckedStatus status;
+            try {
+                status = await _wifi_helper.Check();
+            } catch (UESTCWIFIHelper.NotConnectedException) {
+                MessageBox.Show("未连接WiFi或网线", "提示");
+                Exit(null, null);
+                return;
+            }
             switch (status) {
                 case UESTCWIFIHelper.CheckedStatus.StillOnline:
-                    break;
-                case UESTCWIFIHelper.CheckedStatus.NotConnected:
-                    _notify_icon.ShowBalloonTip(1000, "INFO", "未连接WiFi或网线", ToolTipIcon.Info);
-                    await Task.Delay(3000);
-                    Exit(null, null);
                     break;
                 case UESTCWIFIHelper.CheckedStatus.SuccessfullyLogin:
                     _notify_icon.ShowBalloonTip(1000, "INFO", "登录WiFi成功", ToolTipIcon.Info);

@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 
 public class UESTCWIFIHelper {
+    public class NotConnectedException: Exception {
+        public NotConnectedException(): base("Not connected to network cable or WiFi") {}
+    }
+
     public class DeviceWithinScopeException: Exception {
         public DeviceWithinScopeException(): base("The device is not within the scope of certification") {}
     }
@@ -20,7 +24,6 @@ public class UESTCWIFIHelper {
 
     public enum CheckedStatus {
         StillOnline,
-        NotConnected,
         DeviceWithinScope,
         SuccessfullyLogin,
     }
@@ -135,7 +138,7 @@ public class UESTCWIFIHelper {
     public async Task<CheckedStatus> Check() {
         if (!await CheckConnect()) {
             Log("Not connected to network cable or WiFi");
-            return CheckedStatus.NotConnected;
+            throw new NotConnectedException();
         }
         var (online, ip) = await CheckOnline();
         if (online) return CheckedStatus.StillOnline;

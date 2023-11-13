@@ -99,10 +99,18 @@ check_interval = 30
         );
         if (check_interval <= 0) {
             try {
-                var status = helper.Check().Result;
+                UESTCWIFIHelper.CheckedStatus status;
+                try {
+                    status = helper.Check().Result;
+                } catch (AggregateException e) {
+                    if (e.InnerException is UESTCWIFIHelper.NotConnectedException) {
+                        MessageBox(0, "未连接WiFi或网线", "提示", 0x00000000);
+                        return;
+                    }
+                    throw e.InnerException;
+                }
                 string text = status switch {
                     UESTCWIFIHelper.CheckedStatus.StillOnline => "设备已在线",
-                    UESTCWIFIHelper.CheckedStatus.NotConnected => "未连接WiFi或网线",
                     UESTCWIFIHelper.CheckedStatus.DeviceWithinScope => "设备不在范围内",
                     UESTCWIFIHelper.CheckedStatus.SuccessfullyLogin => "登录WiFi成功",
                     _ => throw new Exception(),
