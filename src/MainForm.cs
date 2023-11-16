@@ -68,12 +68,14 @@ class MainForm: Form {
     }
 
     private void MainForm_Load(object sender, EventArgs e) {
-        this.BeginInvoke(new Action(
-                    () => {
+        this.BeginInvoke(
+            new Action(
+                () => {
                     this.Visible = false;
                     this.Opacity = 1;
-                    }
-                    ));
+                }
+            )
+        );
     }
 
     public MainForm(UESTCWIFIHelper wifi_helper, int interval) {
