@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
 using Nett;
@@ -27,7 +28,7 @@ public static class Program {
     );
 
     [STAThread]
-    static public void Main() {
+    static public async Task Main() {
         var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         var config_file = Path.Combine(home, "uestc_wifi.toml");
         if (!File.Exists(config_file)) {
@@ -101,13 +102,10 @@ check_interval = 30
             try {
                 UESTCWIFIHelper.CheckedStatus status;
                 try {
-                    status = helper.Check().Result;
-                } catch (AggregateException e) {
-                    if (e.InnerException is UESTCWIFIHelper.NotConnectedException) {
-                        MessageBox(0, "未连接WiFi或网线", "提示", 0x00000000);
-                        return;
-                    }
-                    throw e.InnerException;
+                    status = await helper.Check();
+                } catch (UESTCWIFIHelper.NotConnectedException) {
+                    MessageBox(0, "未连接WiFi或网线", "提示", 0x00000000);
+                    return;
                 }
                 string text = status switch {
                     UESTCWIFIHelper.CheckedStatus.StillOnline => "设备已在线",
