@@ -17,20 +17,11 @@ public static class Program {
         uint t
     );
 
-    [DllImport("user32.dll", EntryPoint = "MessageBoxTimeoutW", CharSet = CharSet.Auto)]
-    static private extern int MessageBoxTimeout(
-        int hWnd,
-        string text,
-        string title,
-        uint t,
-        int language_id,
-        int delay
-    );
-
     [STAThread]
     static public async Task Main() {
         var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         var config_file = Path.Combine(home, "uestc_wifi.toml");
+        var log_file = Path.Combine(home, "uestc_wifi.log");
         if (!File.Exists(config_file)) {
             using FileStream fs = new FileStream(config_file, FileMode.Create);
             var content = Encoding.UTF8.GetBytes(
@@ -47,11 +38,10 @@ password = ""your password""
 # 默认为寝室电信网
 network_operator = 0
 
-# 间隔多长时间检查一次网络
+# 后台程序检查网络状况的间隔时长
 # 单位为秒，整数
-# 设置为非正数时相当于单独检查一次网络
-# 默认为 30，即每隔 30 秒自动检查一次网络
-check_interval = 30
+# 设置为非正数时程序单独运行一次
+check_interval = -1
 "
             );
             fs.Write(content, 0, content.Length);
@@ -98,27 +88,36 @@ check_interval = 30
             password.Get<string>(),
             network_operator
         );
+
         if (check_interval <= 0) {
+            byte[] log_content;
+            using FileStream log_fs = File.Exists(log_file) ? new FileStream(log_file, FileMode.Append) : new FileStream(log_file, FileMode.Create);
+            var date = DateTime.Now.ToLocalTime().ToString();
             try {
                 UESTCWIFIHelper.CheckedStatus status;
                 try {
                     status = await helper.Check();
                 } catch (UESTCWIFIHelper.NotConnectedException) {
-                    MessageBox(0, "未连接WiFi或网线", "提示", 0x00000000);
-                    return;
+                    MessageBox(0, "未连接WiFi或网线", "警告", 0x00000000);
+                    log_content = Encoding.UTF8.GetBytes($"{date} - WARNING: 未连接WiFi或网线\n");
+                    goto log_and_exit;
                 }
                 string text = status switch {
                     UESTCWIFIHelper.CheckedStatus.StillOnline => "设备已在线",
                     UESTCWIFIHelper.CheckedStatus.DeviceWithinScope => "设备不在范围内",
                     UESTCWIFIHelper.CheckedStatus.SuccessfullyLogin => "登录WiFi成功",
-                    _ => throw new Exception(),
+                    _ => throw new Exception("unreachable"),
                 };
-                MessageBoxTimeout(0, text, "提示", 0x00000000, 0, 1000);
+                log_content = Encoding.UTF8.GetBytes($"{date} - INFO: {text}\n");
             } catch (UESTCWIFIHelper.IncorrectUsernameOrPasswordException) {
                 MessageBox(0, "账号或密码错误", "错误", 0x00000000);
+                log_content = Encoding.UTF8.GetBytes($"{date} - ERROR: 账号或密码错误\n");
             } catch (Exception e) {
                 MessageBox(0, e.Message, "错误", 0x00000000);
+                log_content = Encoding.UTF8.GetBytes($"{date} - ERROR: {e.Message}\n");
             }
+log_and_exit:
+            log_fs.Write(log_content, 0, log_content.Length);
         } else {
             Application.Run(new MainForm(helper, check_interval));
         }
