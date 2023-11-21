@@ -99,6 +99,8 @@ public class UESTCWIFIHelper {
                 string client_ip = res_dict.client_ip!;
                 Log($"\"{client_ip}\" not online");
                 return (false, client_ip);
+            case "speed_limit_error":
+                throw new Exception("Authentication requests are too frequent");
             default:
                 throw new Exception("Got unexpected msg");
         }
