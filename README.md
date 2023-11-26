@@ -18,8 +18,10 @@ password = "your password"
 # network operator of your wifi
 # 寝室电信网: 0
 # 寝室移动网: 1
+# 以上对应登陆地址为 10.253.0.235
 # 教研室网: 2
 # 教研室电信网: 3
+# 以上对应登录地址为 10.253.0.237
 # 默认为寝室电信网
 network_operator = 0
 
