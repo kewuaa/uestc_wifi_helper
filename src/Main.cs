@@ -4,19 +4,10 @@ using System.Text;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 
 using Nett;
 
 public static class Program {
-    [DllImport("user32.dll", EntryPoint = "MessageBoxW", CharSet = CharSet.Auto)]
-    static private extern int MessageBox(
-        int hWnd,
-        string text,
-        string title,
-        uint t
-    );
-
     [STAThread]
     static public async Task Main() {
         var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -45,7 +36,7 @@ check_interval = -1
 "
             );
             fs.Write(content, 0, content.Length);
-            MessageBox(0, $"你需要在 {config_file} 中保存你的用户名和密码等配置", "提醒", 0x00000000);
+            MessageBox.Show($"你需要在 {config_file} 中保存你的用户名和密码等配置", "提醒");
             Process p = new Process();
             p.StartInfo.FileName = "notepad";
             p.StartInfo.Arguments = config_file;
@@ -55,12 +46,12 @@ check_interval = -1
         var config = Toml.ReadFile(config_file);
         var username = config.TryGetValue("username");
         if (username is null) {
-            MessageBox(0, $"未在 {config_file} 中读取到 username", "警告", 0x00000000);
+            MessageBox.Show($"未在 {config_file} 中读取到 username", "警告");
             return;
         }
         var password = config.TryGetValue("password");
         if (password is null) {
-            MessageBox(0, $"未在 {config_file} 中读取到 password", "警告", 0x00000000);
+            MessageBox.Show($"未在 {config_file} 中读取到 password", "警告");
             return;
         }
         UESTCWIFIHelper.NetworkOperator network_operator;
@@ -78,7 +69,7 @@ check_interval = -1
                 network_operator = UESTCWIFIHelper.NetworkOperator.CTCC_UESTC;
                 break;
             default:
-                MessageBox(0, $"{config_file} 中的配置项 `network_operator` 不合法", "警告", 0x00000000);
+                MessageBox.Show($"{config_file} 中的配置项 `network_operator` 不合法", "警告");
                 return;
         }
         var check_interval = config.TryGetValue("check_interval")?.Get<int>() ?? 30;
@@ -98,7 +89,7 @@ check_interval = -1
                 try {
                     status = await helper.Check();
                 } catch (UESTCWIFIHelper.NotConnectedException) {
-                    MessageBox(0, "未连接WiFi或网线", "警告", 0x00000000);
+                    MessageBox.Show("未连接WiFi或网线", "警告");
                     log_content = Encoding.UTF8.GetBytes($"{date} - WARNING: 未连接WiFi或网线\n");
                     goto log_and_exit;
                 }
@@ -110,10 +101,10 @@ check_interval = -1
                 };
                 log_content = Encoding.UTF8.GetBytes($"{date} - INFO: {text}\n");
             } catch (UESTCWIFIHelper.IncorrectUsernameOrPasswordException) {
-                MessageBox(0, "账号或密码错误", "错误", 0x00000000);
+                MessageBox.Show("账号或密码错误", "错误");
                 log_content = Encoding.UTF8.GetBytes($"{date} - ERROR: 账号或密码错误\n");
             } catch (Exception e) {
-                MessageBox(0, e.Message, "错误", 0x00000000);
+                MessageBox.Show(e.Message, "错误");
                 log_content = Encoding.UTF8.GetBytes($"{date} - ERROR: {e.Message}\n");
             }
 log_and_exit:
