@@ -1,0 +1,5 @@
+[+]
+os_bits=32
+target_triple=x86-windows-gnu
+fpc_target_cpu=i386
+fpc_target_os=win32

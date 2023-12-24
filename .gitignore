@@ -1,2 +1,9 @@
 obj/
 bin/
+backup/
+out/
+*.exe
+*.o
+*.ppu
+*.a
+*.dll
