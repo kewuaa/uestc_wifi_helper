@@ -10,17 +10,6 @@ typedef unsigned int uint32;
 
 
 static
-int unsigned_right_shift(uint32 x, int bit) {
-    return (int)(x >> bit);
-}
-
-static
-int left_shift(uint32 x, int bit) {
-    return (int)(x << bit);
-}
-
-
-static
 std::string x_encode(std::string str, std::string key) {
     if (str == "") {
         throw std::runtime_error("empty string");
