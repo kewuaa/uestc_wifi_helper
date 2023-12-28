@@ -55,13 +55,10 @@ procedure check_once(log_file_path: String);
 implementation
 
 uses
-    dateutils, hmac, sha1, httpprotocol;
+    dateutils, hmac, sha1, httpprotocol, encrypt;
 
 const
     CALLBACK_STRING = 'jQuery112409729861590799633_1698107269291'; // length = 41
-
-function xencode(str: PChar; key: PChar): PChar; cdecl; external 'encrypt';
-procedure ptr_free(ptr: PChar); cdecl; external 'encrypt';
 
 function get_timestamp(): int64;
 begin
@@ -139,7 +136,7 @@ var
     json: TJSONObject;
     json_str: String;
     token: String;
-    encoded_str: PChar;
+    encoded_str: String;
     info: String;
     password_md5: String;
     chksum: String;
@@ -169,9 +166,8 @@ begin
     data.Add('acid', _ac_id);
     data.Add('enc_ver', 'srun_bx1');
     json_str := data.AsJSON;
-    encoded_str := xencode(@json_str[1], @token[1]);
-    info := '{SRBX1}' + String(encoded_str);
-    ptr_free(encoded_str);
+    encoded_str := xencode(json_str, token);
+    info := '{SRBX1}' + encoded_str;
     password_md5 := HMACMD5(token, _password);
     chksum := SHA1Print(SHA1String(
         token
