@@ -107,7 +107,6 @@ std::string x_encode(std::string str, std::string key) {
 extern "C" {
     EXPORT char* xencode(char* str, char* key) {
         auto encoded_str = x_encode(str, key);
-        std::cout << encoded_str << std::endl;
         char* ptr = new char[encoded_str.length() + 1];
         strcpy(ptr, encoded_str.c_str());
         return ptr;
