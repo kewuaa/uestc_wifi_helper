@@ -1,5 +1,4 @@
 #define EXPORT __declspec(dllexport) __cdecl
-#include <iostream>
 #include <math.h>
 #include <string.h>
 #include <memory>
