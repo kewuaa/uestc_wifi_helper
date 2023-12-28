@@ -5,7 +5,7 @@ unit uestc_wifi;
 interface
 
 uses
-    classes, sysutils, IdHTTP, fpjson, jsonparser, dialogs;
+    classes, sysutils, fphttpclient, opensslsockets, fpjson, jsonparser, dialogs;
 
 type
     NotConnectedException = class(Exception);
@@ -34,7 +34,7 @@ type
         _ac_id: Integer;
         _target_ip: String;
         _network_operator: String;
-        _client: TIdHTTP;
+        _client: TFPHTTPClient;
 
         function _parse_response(const res: String): TJSONObject;
         function _check_connect(): Boolean;
@@ -85,10 +85,12 @@ begin
     try
         _client.Get('https://' + _target_ip);
     except
-        on E: EIdHTTPProtocolException do
-            Result := _client.ResponseCode < 400;
+        on E: EHTTPClient do
+        begin
+            Result := _client.ResponseStatusCode < 400;
+        end;
     end;
-    Result := _client.ResponseCode < 400;
+    Result := _client.ResponseStatusCode < 400;
 end;
 
 procedure UESTCWiFi._check_online(out online: Boolean; out online_ip: String);
@@ -251,11 +253,12 @@ begin
         end;
         else raise Exception.Create('Unknown network operator');
     end;
-    _client := TIdHTTP.Create(Nil);
-    _client.Request.ContentType := 'application/x-www-form-urlencoded';
-    _client.Request.UserAgent := 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36';
-    _client.Request.Host := _target_ip;
-    _client.Request.CustomHeaders.Add('Cookie: lang=zh-CN');
+    _client := TFPHTTPClient.Create(Nil);
+    _client.AllowRedirect := True;
+    _client.AddHeader('Content-Type', 'application/x-www-form-urlencoded');
+    _client.AddHeader('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36');
+    _client.AddHeader('Host', _target_ip);
+    _client.Cookies.Add('lang=zh-CN');
 end;
 
 destructor UESTCWiFi.Destroy;
