@@ -101,9 +101,6 @@
     </RunParams>
     <RequiredPackages>
       <Item>
-        <PackageName Value="indylaz"/>
-      </Item>
-      <Item>
         <PackageName Value="FCL"/>
       </Item>
       <Item>
@@ -132,8 +129,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <Libraries Value="unit"/>
-      <OtherUnitFiles Value="D:\Softwares\Program_Files\Pascal\packages\fpTOML\sources\"/>
+      <OtherUnitFiles Value="unit"/>
       <UnitOutputDirectory Value="out\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
@@ -147,6 +143,7 @@
       </Options>
     </Linking>
     <Other>
+      <CustomOptions Value="-dLazarus"/>
       <CompilerPath Value="D:\Softwares\Program_Files\Pascal\FPC\3.2.2\bin\i386-win32\fpc.exe"/>
     </Other>
   </CompilerOptions>

@@ -1,7 +1,7 @@
 program uestc_wifi_helper;
 
 {$mode objfpc}{$H+}
-// {$AppType CONSOLE}
+{$AppType CONSOLE}
 
 uses
     {$IFDEF UNIX}

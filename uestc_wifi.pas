@@ -1,11 +1,22 @@
 unit uestc_wifi;
 
-{$mode objfpc}{$H+}
+{$Codepage UTF8}
+{$Mode objfpc}{$H+}
+{$Macro on}
 
 interface
 
 uses
-    classes, sysutils, fphttpclient, opensslsockets, fpjson, jsonparser, dialogs;
+    classes, sysutils,
+    fphttpclient, opensslsockets,
+    fpjson, jsonparser
+    {$IfDef Lazarus}
+    , dialogs
+    {$Define warning := ShowMessage}
+    {$Else}
+    {$Define warning := WriteLn}
+    {$EndIf}
+    ;
 
 type
     NotConnectedException = class(Exception);
@@ -295,34 +306,45 @@ end;
 
 procedure check_once(log_file_path: String);
 var
+    time: String;
+    msg: UnicodeString;
     log_file: TextFile;
 begin
-    AssignFile(log_file, log_file_path);
-    Append(log_file);
+    time := DateTimeToStr(Now);
     try
         case wifi.check() of
-            StillOnline: WriteLn(log_file, DateTimeToStr(Now) + ' - INFO: 设备已在线');
-            DeviceWithinScope: WriteLn(log_file, DateTimeToStr(Now) + ' - INFO: 设备不在范围内');
-            SuccessfullyLogin: WriteLn(log_file, DateTimeToStr(Now) + ' - INFO: 登录成功');
+            StillOnline: msg := time + ' - INFO: 设备已在线';
+            DeviceWithinScope: msg := time + ' - INFO: 设备不在范围内';
+            SuccessfullyLogin: msg := time + ' - INFO: 登录成功';
         end;
     except
         on E: NotConnectedException do
         begin
-            ShowMessage('未连接到网络');
-            WriteLn(log_file, DateTimeToStr(Now) + ' - ERROR: 未连接到网络');
+            warning('未连接到网络');
+            msg := time + ' - ERROR: 未连接到网络';
         end;
         on E: IncorrectUsernameOrPasswordException do
         begin
-            ShowMessage('用户名或密码错误');
-            WriteLn(log_file, DateTimeToStr(Now) + ' - ERROR: 用户名或密码错误');
+            warning('用户名或密码错误');
+            msg := time + ' - ERROR: 用户名或密码错误';
         end;
         on E: Exception do
         begin
-            ShowMessage('未知错误: ' + E.Message);
-            WriteLn(log_file, DateTimeToStr(Now) + ' - ERROR: 未知错误: ' + E.Message);
+            warning('未知错误: ' + E.Message);
+            msg := time + ' - ERROR: 未知错误: ' + E.Message;
         end;
     end;
-    CloseFile(log_file);
+    if log_file_path <> '' then
+    begin
+        AssignFile(log_file, log_file_path);
+        Append(log_file);
+        WriteLn(log_file, msg);
+        CloseFile(log_file);
+    end
+    else
+    begin
+        WriteLn(msg);
+    end;
     Exit();
 end;
 
