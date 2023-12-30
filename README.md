@@ -8,28 +8,7 @@
 
 # 配置
 
-首次运行会提示需要配置，配置文件默认如下：
-
-``` toml
-username = "your username"
-
-password = "your password"
-
-# network operator of your wifi
-# 寝室电信网: 0
-# 寝室移动网: 1
-# 以上对应登陆地址为 10.253.0.235
-# 教研室网: 2
-# 教研室电信网: 3
-# 以上对应登录地址为 10.253.0.237
-# 默认为寝室电信网
-network_operator = 0
-
-# 后台程序检查网络状况的间隔时长
-# 单位为秒，整数
-# 设置为非正数时程序单独运行一次
-check_interval = -1
-```
+首次运行会提示需要配置，[默认配置文件](./template.toml)
 
 配置保存在`%USERPROFILE%/uestc_wifi.toml`
 
