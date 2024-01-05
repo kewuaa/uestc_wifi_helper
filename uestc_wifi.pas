@@ -1,6 +1,8 @@
 unit uestc_wifi;
 
+{$IfDef WINDOWS}
 {$Codepage UTF8}
+{$EndIf}
 {$Mode objfpc}{$H+}
 {$Macro on}
 
@@ -337,7 +339,14 @@ begin
     if log_file_path <> '' then
     begin
         AssignFile(log_file, log_file_path);
-        Append(log_file);
+        if FileExists(log_file_path) then
+        begin
+            Append(log_file);
+        end
+        else
+        begin
+            ReWrite(log_file);
+        end;
         WriteLn(log_file, msg);
         CloseFile(log_file);
     end
