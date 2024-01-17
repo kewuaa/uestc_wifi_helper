@@ -3,16 +3,16 @@
   <ProjectSession>
     <PathDelim Value="\"/>
     <Version Value="12"/>
-    <ManyBuildModesSelection Value="Release"/>
-    <BuildModes Active="Default"/>
+    <ManyBuildModesSelection Value="Release-Linux64,Release-Win64"/>
+    <BuildModes Active="Release-Win64"/>
     <Units>
       <Unit>
         <Filename Value="uestc_wifi_helper.lpr"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="2"/>
-        <CursorPos X="16" Y="28"/>
-        <UsageCount Value="65"/>
+        <CursorPos X="39" Y="23"/>
+        <UsageCount Value="68"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -23,7 +23,7 @@
         <ResourceBaseClass Value="Form"/>
         <TopLine Value="69"/>
         <CursorPos X="12" Y="92"/>
-        <UsageCount Value="65"/>
+        <UsageCount Value="68"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -57,11 +57,9 @@
       </Unit>
       <Unit>
         <Filename Value="uestc_wifi.pas"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="3"/>
-        <CursorPos X="22" Y="15"/>
-        <UsageCount Value="30"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="31" Y="18"/>
+        <UsageCount Value="31"/>
       </Unit>
       <Unit>
         <Filename Value="D:\Softwares\Program_Files\Lazarus\lcl\menus.pp"/>
@@ -90,7 +88,6 @@
         <TopLine Value="747"/>
         <CursorPos X="3" Y="637"/>
         <UsageCount Value="18"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="D:\Softwares\Program_Files\Pascal\FPC\3.2.2\source\packages\hash\src\sha1.pp"/>
@@ -102,9 +99,8 @@
       <Unit>
         <Filename Value="uestc_wifi_config.pas"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="20"/>
-        <CursorPos X="45" Y="35"/>
-        <UsageCount Value="13"/>
+        <CursorPos X="38" Y="20"/>
+        <UsageCount Value="15"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -117,28 +113,20 @@
         <EditorIndex Value="-1"/>
         <UsageCount Value="10"/>
       </Unit>
+      <Unit>
+        <Filename Value="unit\TOMLParser.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="876"/>
+        <CursorPos X="3" Y="904"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unit\TOML.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit>
     </Units>
-    <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="uestc_wifi.pas"/>
-        <Caret Line="293" Column="18" TopLine="278"/>
-      </Position>
-      <Position>
-        <Filename Value="uestc_wifi.pas"/>
-        <Caret Line="172" Column="15" TopLine="160"/>
-      </Position>
-      <Position>
-        <Filename Value="uestc_wifi.pas"/>
-        <Caret Line="194" Column="21" TopLine="181"/>
-      </Position>
-      <Position>
-        <Filename Value="uestc_wifi.pas"/>
-        <Caret Line="172" Column="15" TopLine="160"/>
-      </Position>
-      <Position>
-        <Filename Value="uestc_wifi.pas"/>
-        <Caret Line="172" Column="15" TopLine="160"/>
-      </Position>
+    <JumpHistory HistoryIndex="17">
       <Position>
         <Filename Value="ui.pas"/>
         <Caret Line="26" Column="12" TopLine="16"/>
@@ -168,32 +156,8 @@
         <Caret Line="47" Column="28" TopLine="26"/>
       </Position>
       <Position>
-        <Filename Value="uestc_wifi.pas"/>
-        <Caret Line="66" Column="33" TopLine="66"/>
-      </Position>
-      <Position>
         <Filename Value="uestc_wifi_helper.lpr"/>
         <Caret Line="15" Column="26" TopLine="2"/>
-      </Position>
-      <Position>
-        <Filename Value="uestc_wifi_config.pas"/>
-        <Caret Line="21" Column="22" TopLine="8"/>
-      </Position>
-      <Position>
-        <Filename Value="uestc_wifi_config.pas"/>
-        <Caret Line="6" Column="5"/>
-      </Position>
-      <Position>
-        <Filename Value="uestc_wifi_config.pas"/>
-        <Caret Line="24" Column="14" TopLine="11"/>
-      </Position>
-      <Position>
-        <Filename Value="uestc_wifi_config.pas"/>
-        <Caret Line="32" Column="9" TopLine="20"/>
-      </Position>
-      <Position>
-        <Filename Value="uestc_wifi_config.pas"/>
-        <Caret Line="33" Column="81" TopLine="20"/>
       </Position>
       <Position>
         <Filename Value="ui.pas"/>
@@ -228,16 +192,12 @@
         <Caret Line="92" Column="12" TopLine="87"/>
       </Position>
       <Position>
-        <Filename Value="uestc_wifi.pas"/>
-        <Caret Line="89" Column="36" TopLine="75"/>
+        <Filename Value="uestc_wifi_helper.lpr"/>
+        <Caret Line="15" Column="41" TopLine="2"/>
       </Position>
       <Position>
-        <Filename Value="uestc_wifi.pas"/>
-        <Caret Line="12" Column="23"/>
-      </Position>
-      <Position>
-        <Filename Value="uestc_wifi.pas"/>
-        <Caret Line="13" Column="18"/>
+        <Filename Value="uestc_wifi_config.pas"/>
+        <Caret Line="6" Column="51"/>
       </Position>
     </JumpHistory>
     <RunParams>

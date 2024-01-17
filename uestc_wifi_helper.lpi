@@ -16,18 +16,18 @@
     </General>
     <BuildModes>
       <Item Name="Default" Default="True"/>
-      <Item Name="Debug">
+      <Item Name="Debug-Linux64">
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
-            <Filename Value="uestc_wifi_helper"/>
+            <Filename Value="out\Debug\$(TargetCPU)-$(TargetOS)\uestc_wifi_helper"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <Libraries Value="D:\Softwares\Program_Files\C\mingw64\x86_64-w64-mingw32\lib\;D:\Softwares\Program_Files\C\mingw64\lib\gcc\x86_64-w64-mingw32\13.1.0\"/>
-            <OtherUnitFiles Value="D:\Softwares\Program_Files\Pascal\packages\fpTOML\sources\"/>
-            <UnitOutputDirectory Value="out\$(TargetCPU)-$(TargetOS)"/>
+            <Libraries Value="D:\Softwares\Program_Files\C\mingw64\x86_64-w64-mingw32\lib;D:\Softwares\Program_Files\C\mingw64\lib\gcc\x86_64-w64-mingw32\13.1.0"/>
+            <OtherUnitFiles Value="D:\Softwares\Program_Files\Pascal\packages\fpTOML\sources"/>
+            <UnitOutputDirectory Value="lib\Debug\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
             <SyntaxOptions>
@@ -42,6 +42,8 @@
               <StackChecks Value="True"/>
             </Checks>
             <VerifyObjMethodCallValidity Value="True"/>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="linux"/>
           </CodeGeneration>
           <Linking>
             <Debugging>
@@ -58,21 +60,22 @@
           </Linking>
         </CompilerOptions>
       </Item>
-      <Item Name="Release">
+      <Item Name="Release-Linux64">
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
-            <Filename Value="uestc_wifi_helper"/>
+            <Filename Value="out\Release\$(TargetCPU)-$(TargetOS)\uestc_wifi_helper"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <Libraries Value="D:\Softwares\Program_Files\C\mingw64\x86_64-w64-mingw32\lib\;D:\Softwares\Program_Files\C\mingw64\lib\gcc\x86_64-w64-mingw32\13.1.0\"/>
-            <OtherUnitFiles Value="D:\Softwares\Program_Files\Pascal\packages\fpTOML\sources\"/>
-            <UnitOutputDirectory Value="out\$(TargetCPU)-$(TargetOS)"/>
+            <OtherUnitFiles Value="unit"/>
+            <UnitOutputDirectory Value="lib\Release\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <CodeGeneration>
             <SmartLinkUnit Value="True"/>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="linux"/>
             <Optimizations>
               <OptimizationLevel Value="3"/>
             </Optimizations>
@@ -80,7 +83,69 @@
           <Linking>
             <Debugging>
               <GenerateDebugInfo Value="False"/>
-              <RunWithoutDebug Value="True"/>
+            </Debugging>
+            <LinkSmart Value="True"/>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+        </CompilerOptions>
+      </Item>
+      <Item Name="Debug-Win64">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="out\Debug\$(TargetCPU)-$(TargetOS)\uestc_wifi_helper"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="unit"/>
+            <UnitOutputDirectory Value="lib\Debug\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="win64"/>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+            </Debugging>
+            <LinkSmart Value="True"/>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+        </CompilerOptions>
+      </Item>
+      <Item Name="Release-Win64">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="out\Release\$(TargetCPU)-$(TargetOS)\uestc_wifi_helper"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="unit"/>
+            <UnitOutputDirectory Value="lib\Release\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="win64"/>
+            <Optimizations>
+              <OptimizationLevel Value="3"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
             </Debugging>
             <LinkSmart Value="True"/>
             <Options>
@@ -125,13 +190,17 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="uestc_wifi_helper"/>
+      <Filename Value="out\Default\$(TargetCPU)-$(TargetOS)\uestc_wifi_helper"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
       <OtherUnitFiles Value="unit"/>
-      <UnitOutputDirectory Value="out\$(TargetCPU)-$(TargetOS)"/>
+      <UnitOutputDirectory Value="lib\Default\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
+    <CodeGeneration>
+      <TargetCPU Value="x86_64"/>
+      <TargetOS Value="win64"/>
+    </CodeGeneration>
     <Linking>
       <Debugging>
         <DebugInfoType Value="dsDwarf2Set"/>
@@ -144,7 +213,6 @@
     </Linking>
     <Other>
       <CustomOptions Value="-dLazarus"/>
-      <CompilerPath Value="D:\Softwares\Program_Files\Pascal\FPC\3.2.2\bin\i386-win32\fpc.exe"/>
     </Other>
   </CompilerOptions>
   <Debugging>

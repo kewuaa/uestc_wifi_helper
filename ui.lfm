@@ -1,10 +1,9 @@
 object Form1: TForm1
-  Left = 473
-  Height = 240
-  Top = 87
-  Width = 320
+  Left = 333
+  Height = 192
+  Top = 236
+  Width = 256
   Caption = 'UESTC WiFi Helper'
-  DesignTimePPI = 120
   Icon.Data = {
     BE1000000000010001002020000001002000A810000016000000280000002000
     0000400000000100200000000000001000006400000064000000000000000000
@@ -143,7 +142,7 @@ object Form1: TForm1
     007F
   }
   OnCreate = FormCreate
-  LCLVersion = '3.0.0.2'
+  LCLVersion = '2.2.6.0'
   object TrayIcon1: TTrayIcon
     BalloonTimeout = 1500
     PopUpMenu = PopupMenu1
@@ -286,12 +285,12 @@ object Form1: TForm1
     }
     Hint = 'UESTC WiFi Helper'
     Visible = True
-    Left = 208
-    Top = 184
+    Left = 166
+    Top = 147
   end
   object PopupMenu1: TPopupMenu
-    Left = 272
-    Top = 184
+    Left = 218
+    Top = 147
     object MenuItem2: TMenuItem
       Caption = 'Check'
       OnClick = MenuItem2Click
@@ -304,7 +303,7 @@ object Form1: TForm1
   object Timer1: TTimer
     OnTimer = Timer1Timer
     OnStartTimer = Timer1StartTimer
-    Left = 144
-    Top = 184
+    Left = 115
+    Top = 147
   end
 end

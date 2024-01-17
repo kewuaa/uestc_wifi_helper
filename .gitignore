@@ -2,6 +2,7 @@ obj/
 bin/
 backup/
 out/
+lib/
 *.exe
 *.o
 *.ppu
