@@ -15,7 +15,7 @@ uses
     uestc_wifi, uestc_wifi_config
     { you can add units after this };
 
-{$R *.res}
+// {$R *.res}
 {$R template.rc}
 
 var
