@@ -3,6 +3,7 @@ bin/
 backup/
 out/
 lib/
+publish/
 *.exe
 *.o
 *.ppu
