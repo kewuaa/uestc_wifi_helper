@@ -21,12 +21,11 @@
           <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
-            <Filename Value="out\Debug\$(TargetCPU)-$(TargetOS)\uestc_wifi_helper"/>
+            <Filename Value="out\Debug\uestc_wifi_helper-$(TargetCPU)-$(TargetOS)"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <Libraries Value="D:\Softwares\Program_Files\C\mingw64\x86_64-w64-mingw32\lib;D:\Softwares\Program_Files\C\mingw64\lib\gcc\x86_64-w64-mingw32\13.1.0"/>
-            <OtherUnitFiles Value="D:\Softwares\Program_Files\Pascal\packages\fpTOML\sources"/>
+            <OtherUnitFiles Value="unit"/>
             <UnitOutputDirectory Value="lib\Debug\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
@@ -65,7 +64,7 @@
           <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
-            <Filename Value="out\Release\$(TargetCPU)-$(TargetOS)\uestc_wifi_helper"/>
+            <Filename Value="out\Release\uestc_wifi_helper-$(TargetCPU)-$(TargetOS)"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
@@ -98,7 +97,7 @@
           <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
-            <Filename Value="out\Debug\$(TargetCPU)-$(TargetOS)\uestc_wifi_helper"/>
+            <Filename Value="out\Debug\uestc_wifi_helper-$(TargetCPU)-$(TargetOS)"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
@@ -128,7 +127,7 @@
           <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
-            <Filename Value="out\Release\$(TargetCPU)-$(TargetOS)\uestc_wifi_helper"/>
+            <Filename Value="out\Release\uestc_wifi_helper-$(TargetCPU)-$(TargetOS)"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>

@@ -11,9 +11,8 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="4"/>
-        <CursorPos X="180" Y="15"/>
-        <UsageCount Value="69"/>
+        <CursorPos X="48" Y="20"/>
+        <UsageCount Value="72"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -24,7 +23,7 @@
         <ResourceBaseClass Value="Form"/>
         <TopLine Value="69"/>
         <CursorPos X="12" Y="92"/>
-        <UsageCount Value="69"/>
+        <UsageCount Value="72"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -99,9 +98,9 @@
       </Unit>
       <Unit>
         <Filename Value="uestc_wifi_config.pas"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="3"/>
         <CursorPos X="38" Y="20"/>
-        <UsageCount Value="15"/>
+        <UsageCount Value="16"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -116,10 +115,11 @@
       </Unit>
       <Unit>
         <Filename Value="unit\TOMLParser.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="876"/>
-        <CursorPos X="3" Y="904"/>
-        <UsageCount Value="10"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="709"/>
+        <CursorPos X="30" Y="740"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="unit\TOML.pas"/>
@@ -127,7 +127,7 @@
         <UsageCount Value="10"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="17">
+    <JumpHistory HistoryIndex="19">
       <Position>
         <Filename Value="ui.pas"/>
         <Caret Line="26" Column="12" TopLine="16"/>
@@ -199,6 +199,14 @@
       <Position>
         <Filename Value="uestc_wifi_config.pas"/>
         <Caret Line="6" Column="51"/>
+      </Position>
+      <Position>
+        <Filename Value="uestc_wifi_helper.lpr"/>
+        <Caret Line="17" Column="15"/>
+      </Position>
+      <Position>
+        <Filename Value="unit\TOMLParser.pas"/>
+        <Caret Line="904" Column="3" TopLine="877"/>
       </Position>
     </JumpHistory>
     <RunParams>
