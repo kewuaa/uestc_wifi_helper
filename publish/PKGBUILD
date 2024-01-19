@@ -1,0 +1,29 @@
+pkgname=uestc_wifi_helper
+pkgver=0.4.0
+pkgrel=1
+arch=("x86_64")
+depends=("qt5pas")
+source=(
+    "uestc_wifi_helper::https://github.com/kewuaa/uestc_wifi_helper/releases/download/v${pkgver}/uestc_wifi_helper-x86_64-linux"
+    "uestc_wifi_helper.ico"
+)
+md5sums=("SKIP" "cb872d9d853da70bea99ac7c12f2a80b")
+
+
+prepare() {
+    cat << EOF > ${srcdir}/uestc_wifi_helper.desktop
+[Desktop Entry]
+Version=0.4.0
+Type=Application
+Name=UESTC WiFi Helper
+Exec=/usr/bin/uestc_wifi_helper
+Icon=/usr/share/icons/hicolor/32x32/apps/uestc_wifi_helper.ico
+EOF
+}
+
+
+package() {
+    install -D uestc_wifi_helper.ico ${pkgdir}/usr/share/icons/hicolor/32x32/apps/uestc_wifi_helper.ico
+    install -D uestc_wifi_helper ${pkgdir}/usr/bin/uestc_wifi_helper
+    install -D uestc_wifi_helper.desktop ${pkgdir}/usr/share/applications/uestc_wifi_helper.desktop
+}

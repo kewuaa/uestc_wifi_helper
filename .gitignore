@@ -3,7 +3,8 @@ bin/
 backup/
 out/
 lib/
-publish/
+publish/*
+!publish/PKGBUILD
 *.exe
 *.o
 *.ppu
