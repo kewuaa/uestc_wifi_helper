@@ -18,6 +18,7 @@ Type=Application
 Name=UESTC WiFi Helper
 Exec=/usr/bin/uestc_wifi_helper
 Icon=/usr/share/icons/hicolor/32x32/apps/uestc_wifi_helper.ico
+Categories=Utility;
 EOF
 }
 
