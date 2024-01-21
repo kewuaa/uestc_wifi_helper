@@ -6,7 +6,9 @@
 
 可在[发布页面](https://github.com/kewuaa/uestc_wifi_helper/releases)下载可执行文件，分为纯命令行程序和托盘程序。
 
-依赖openssl，windows下需要下载openssl，可在[此处](https://indy.fulgan.com/SSL/)下载，linux一般自带openssl，但是托盘程序依赖qt5pas
+依赖openssl，windows下可在[此处](https://indy.fulgan.com/SSL/)下载，linux一般自带openssl，但是托盘程序依赖qt5pas
+
+windows也可以安装[以前的版本](https://github.com/kewuaa/uestc_wifi_helper/releases/tag/v0.3.1)
 
 # 配置
 
