@@ -22,8 +22,18 @@ windows也可以安装[以前的版本](https://github.com/kewuaa/uestc_wifi_hel
 
 # 使用
 
+## 托盘程序
+
 `check_interval`为正数时，将运行一个后台程序，间隔`check_interval`秒检查一次网络连接情况
 
 `check_interval`为非正数时，静默检查一次网络连接情况，结果保存至日志文件中
 
 可自行设置开机自启动或其他方式。
+
+## 命令行程序
+
+```
+uestc_wifi_helper_cli <username> <password> <network_operator> [-l]
+```
+
+前三个参数和配置文件中含义一致，不加`-l`会将结果输出至标准输出，加`-l`会输出至日志文件中。
