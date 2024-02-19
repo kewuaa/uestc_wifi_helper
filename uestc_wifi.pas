@@ -10,7 +10,7 @@ interface
 
 uses
     classes, sysutils,
-    fphttpclient, opensslsockets,
+    fphttpclient,
     fpjson, jsonparser
     {$IfDef Lazarus}
     , dialogs
