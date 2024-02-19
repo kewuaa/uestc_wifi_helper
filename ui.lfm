@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 333
-  Height = 192
-  Top = 236
-  Width = 256
+  Left = 15
+  Height = 1046
+  Top = 15
+  Width = 1134
   Caption = 'UESTC WiFi Helper'
   Icon.Data = {
     BE1000000000010001002020000001002000A810000016000000280000002000
@@ -142,7 +142,7 @@ object Form1: TForm1
     007F
   }
   OnCreate = FormCreate
-  LCLVersion = '2.2.6.0'
+  LCLVersion = '3.0.0.3'
   object TrayIcon1: TTrayIcon
     BalloonTimeout = 1500
     PopUpMenu = PopupMenu1
