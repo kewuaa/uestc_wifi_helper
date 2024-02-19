@@ -93,7 +93,7 @@ end;
 function UESTCWiFi._check_connect(): Boolean;
 begin
     try
-        _client.Get('https://' + _target_ip);
+        _client.Get('http://' + _target_ip);
     except
        on E: Exception do
         begin
@@ -113,7 +113,7 @@ var
 begin
     timestamp := get_timestamp();
     res := _client.Get(
-        'https://' + _target_ip + '/cgi-bin/rad_user_info'
+        'http://' + _target_ip + '/cgi-bin/rad_user_info'
         + '?callback=' + CALLBACK_STRING
         + '&_=' + IntToStr(timestamp)
     );
@@ -160,7 +160,7 @@ var
 begin
     username := _username + '@' + _network_operator;
     res := _client.Get(
-        'https://' + _target_ip + '/cgi-bin/get_challenge'
+        'http://' + _target_ip + '/cgi-bin/get_challenge'
         + '?callback=' + CALLBACK_STRING
         + '&username=' + username
         + '&ip=' + client_ip
@@ -201,7 +201,7 @@ begin
         + info
     ));
     res := _client.Get(
-        'https://' + _target_ip + '/cgi-bin/srun_portal'
+        'http://' + _target_ip + '/cgi-bin/srun_portal'
         + '?callback=' + CALLBACK_STRING
         + '&action=login'
         + '&username=' + username
