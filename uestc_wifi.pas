@@ -95,9 +95,11 @@ begin
     try
         _client.Get('https://' + _target_ip);
     except
-        on E: EHTTPClient do
+       on E: Exception do
         begin
-            Result := _client.ResponseStatusCode < 400;
+            Exit(
+                (_client.ResponseStatusCode > 0) and (_client.ResponseStatusCode < 400)
+            );
         end;
     end;
     Result := _client.ResponseStatusCode < 400;
