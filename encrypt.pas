@@ -51,7 +51,7 @@ begin
     end;
 end;
 
-// s := '{"username":"202321011111@dx","password":"hzy..123456","ip":"10.20.15.20","acid":"3","enc_ver":"srun_bx1"}'
+// s := '{"username":"xxxxxxxxxxxx@dx","password":"xxxxxxxxxxx","ip":"10.20.15.20","acid":"3","enc_ver":"srun_bx1"}'
 // key := '4407928503af441b473f1e3cadd053214fce3ea0ce2ef529700adced1d84b9dd'
 // 'cOM7jHUi9cVk2sWckU+2bIvJ9PL4tLKOIsOoNjrZL5oqXbG/so6+CEoSLpvzw4+0cEmmneu+hlrQWCCn+bfYgwOeb1voXqxV1r28fYJ19xGvuTMBYMYSJGkJNqb/dZLClR7VE7tl3YjKLmJhz8SZ++=='
 function xencode(const str: String; const key: String): String;
