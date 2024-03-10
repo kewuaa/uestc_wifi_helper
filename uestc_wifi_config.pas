@@ -89,6 +89,7 @@ begin
     begin
         check_interval := 30;
     end;
+    toml_doc.Free();
 end;
 
 end.
