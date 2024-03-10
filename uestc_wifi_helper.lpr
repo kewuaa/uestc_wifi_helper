@@ -22,6 +22,7 @@ var
     load_config_success: Boolean;
     log_file_path: String;
 begin
+    Application.Initialize;
     load_config_success := load_config();
     if not load_config_success then
     begin
@@ -36,7 +37,6 @@ begin
     end;
     RequireDerivedFormResource:=True;
     Application.Scaled:=True;
-    Application.Initialize;
     Application.ShowMainForm:=False;
     Application.CreateForm(TForm1, Form1);
     Application.Run;
