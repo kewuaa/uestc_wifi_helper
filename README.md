@@ -18,6 +18,8 @@ linux下的托盘程序依赖qt6pas
 
 配置和日志均保存在用户目录下，`uestc_wifi.toml` 和 `uestc_wifi.log`
 
+用户目录是C:\Users\用户名\
+
 # 使用
 
 ## 托盘程序
