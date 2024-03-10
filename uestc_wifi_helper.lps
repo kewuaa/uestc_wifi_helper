@@ -11,8 +11,9 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <CursorPos X="48" Y="20"/>
-        <UsageCount Value="72"/>
+        <TopLine Value="33"/>
+        <CursorPos X="28" Y="37"/>
+        <UsageCount Value="76"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -23,7 +24,7 @@
         <ResourceBaseClass Value="Form"/>
         <TopLine Value="69"/>
         <CursorPos X="12" Y="92"/>
-        <UsageCount Value="72"/>
+        <UsageCount Value="76"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -99,8 +100,9 @@
       <Unit>
         <Filename Value="uestc_wifi_config.pas"/>
         <EditorIndex Value="3"/>
-        <CursorPos X="38" Y="20"/>
-        <UsageCount Value="16"/>
+        <TopLine Value="22"/>
+        <CursorPos X="30" Y="20"/>
+        <UsageCount Value="18"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -117,8 +119,8 @@
         <Filename Value="unit\TOMLParser.pas"/>
         <EditorIndex Value="2"/>
         <TopLine Value="709"/>
-        <CursorPos X="30" Y="740"/>
-        <UsageCount Value="11"/>
+        <CursorPos X="24" Y="740"/>
+        <UsageCount Value="13"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
