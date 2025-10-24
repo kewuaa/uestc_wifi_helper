@@ -13,4 +13,4 @@ network_operator = 0
 # 后台程序检查网络状况的间隔时长
 # 单位为秒，整数
 # 设置为非正数时程序单独运行一次
-check_interval = -1
+check_interval = 1

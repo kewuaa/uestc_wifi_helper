@@ -1,0 +1,88 @@
+cmake_minimum_required(VERSION 3.15)
+
+project(uestc_wifi_helper LANGUAGES C CXX)
+
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_FLAG_DEBUG "-O0 -Wall -g -ggdb")
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set(CMAKE_VISIBILITY_INLINES_HIDDEN TRUE)
+
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
+
+include(cmake/CPM.cmake)
+
+CPMAddPackage("gh:CLIUtils/CLI11@2.5.0")
+CPMAddPackage("gh:nlohmann/json@3.12.0")
+CPMAddPackage("gh:Neargye/magic_enum@0.9.7")
+CPMAddPackage("gh:yhirose/cpp-httplib@0.26.0")
+CPMAddPackage("gh:marzer/tomlplusplus#v3.4.0")
+CPMAddPackage(
+    NAME cryptopp
+    GIT_REPOSITORY "https://github.com/abdes/cryptopp-cmake.git"
+    GIT_TAG CRYPTOPP_8_9_0
+    OPTIONS "CRYPTOPP_BUILD_TESTING=OFF"
+)
+
+if (CMAKE_SYSTEM_NAME STREQUAL Linux)
+    CPMAddPackage("gh:Kistler-Group/sdbus-cpp@2.1.0")
+endif()
+
+find_package(spdlog REQUIRED)
+
+if (CMAKE_BUILD_TYPE STREQUAL Debug)
+    add_definitions(-DSPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG)
+endif()
+
+add_library(uestc_wifi_lib)
+target_compile_options(uestc_wifi_lib PUBLIC -UCPPHTTPLIB_ZLIB_SUPPORT)
+target_include_directories(uestc_wifi_lib PUBLIC src)
+target_sources(
+    uestc_wifi_lib
+    PRIVATE
+        src/encrypt.cpp
+        src/uestc_wifi.cpp
+)
+target_link_libraries(
+    uestc_wifi_lib
+    PUBLIC
+        httplib
+        spdlog::spdlog
+        cryptopp::cryptopp
+        magic_enum::magic_enum
+        nlohmann_json::nlohmann_json
+)
+
+add_executable(uestc_wifi)
+target_sources(uestc_wifi PRIVATE src/uestc_wifi_cli.cpp)
+target_link_libraries(
+    uestc_wifi
+    PRIVATE
+        CLI11::CLI11
+        uestc_wifi_lib
+)
+
+add_executable(uestc_wifi_helper)
+target_sources(
+    uestc_wifi_helper
+    PRIVATE
+        src/uestc_wifi_config.cpp
+        src/uestc_wifi_helper.cpp
+        src/main.cpp
+)
+target_link_libraries(
+    uestc_wifi_helper
+    PRIVATE
+        uestc_wifi_lib
+        tomlplusplus::tomlplusplus
+)
+if (CMAKE_SYSTEM_NAME STREQUAL Linux)
+    target_sources(uestc_wifi_helper PRIVATE src/uestc_wifi_helper_linux.cpp)
+    target_link_libraries(uestc_wifi_helper PRIVATE sdbus-c++)
+elseif (CMAKE_SYSTEM_NAME STREQUAL Windows)
+    target_sources(uestc_wifi_helper PRIVATE src/uestc_wifi_helper_windows.cpp)
+elseif (CMAKE_SYSTEM_NAME STREQUAL Darwin)
+    message(FATAL "not support yet")
+endif()

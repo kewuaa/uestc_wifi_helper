@@ -1,12 +1,3 @@
-obj/
-bin/
-backup/
-out/
-lib/
-publish/*
-!publish/PKGBUILD
-*.exe
-*.o
-*.ppu
-*.a
-*.dll
+.cache/
+build*/
+config.toml
