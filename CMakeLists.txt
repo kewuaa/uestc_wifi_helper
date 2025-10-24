@@ -30,11 +30,20 @@ CPMAddPackage(
     OPTIONS "CRYPTOPP_BUILD_TESTING=OFF"
 )
 
+find_package(spdlog)
+if (NOT spdlog_FOUND)
+    message(STATUS "spdlog not found in system, download it by CPM")
+    CPMAddPackage(
+        NAME spdlog
+        GIT_REPOSITORY "https://github.com/gabime/spdlog.git"
+        GIT_TAG v1.16.0
+        OPTIONS "SPDLOG_USE_STD_FORMAT=TRUE"
+    )
+endif()
+
 if (CMAKE_SYSTEM_NAME STREQUAL Linux)
     CPMAddPackage("gh:Kistler-Group/sdbus-cpp@2.1.0")
 endif()
-
-find_package(spdlog REQUIRED)
 
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
     add_definitions(-DSPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG)
@@ -79,6 +88,7 @@ target_sources(
 target_link_libraries(
     uestc_wifi_helper
     PRIVATE
+        CLI11::CLI11
         uestc_wifi_lib
         tomlplusplus::tomlplusplus
 )
