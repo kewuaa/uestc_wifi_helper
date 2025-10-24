@@ -51,12 +51,12 @@ endif()
 
 add_library(uestc_wifi_lib)
 target_compile_options(uestc_wifi_lib PUBLIC -UCPPHTTPLIB_ZLIB_SUPPORT)
-target_include_directories(uestc_wifi_lib PUBLIC src)
+target_include_directories(uestc_wifi_lib PUBLIC include)
 target_sources(
     uestc_wifi_lib
     PRIVATE
-        src/encrypt.cpp
-        src/uestc_wifi.cpp
+        src/uestc_wifi/encrypt.cpp
+        src/uestc_wifi/impl.cpp
 )
 target_link_libraries(
     uestc_wifi_lib
@@ -69,7 +69,7 @@ target_link_libraries(
 )
 
 add_executable(uestc_wifi)
-target_sources(uestc_wifi PRIVATE src/uestc_wifi_cli.cpp)
+target_sources(uestc_wifi PRIVATE src/uestc_wifi/main.cpp)
 target_link_libraries(
     uestc_wifi
     PRIVATE
@@ -81,9 +81,9 @@ add_executable(uestc_wifi_helper)
 target_sources(
     uestc_wifi_helper
     PRIVATE
-        src/uestc_wifi_config.cpp
-        src/uestc_wifi_helper.cpp
-        src/main.cpp
+        src/uestc_wifi_helper/config.cpp
+        src/uestc_wifi_helper/impl.cpp
+        src/uestc_wifi_helper/main.cpp
 )
 target_link_libraries(
     uestc_wifi_helper
@@ -93,8 +93,16 @@ target_link_libraries(
         tomlplusplus::tomlplusplus
 )
 if (CMAKE_SYSTEM_NAME STREQUAL Linux)
-    target_sources(uestc_wifi_helper PRIVATE src/uestc_wifi_helper_linux.cpp)
+    target_sources(
+        uestc_wifi_helper
+        PRIVATE
+            src/uestc_wifi_helper/impl_linux.cpp
+    )
     target_link_libraries(uestc_wifi_helper PRIVATE sdbus-c++)
 elseif (CMAKE_SYSTEM_NAME STREQUAL Windows)
-    target_sources(uestc_wifi_helper PRIVATE src/uestc_wifi_helper_windows.cpp)
+    target_sources(
+        uestc_wifi_helper
+        PRIVATE
+            src/uestc_wifi_helper/impl_windows.cpp
+    )
 endif()

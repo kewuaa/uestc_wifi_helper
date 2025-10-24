@@ -1,6 +1,19 @@
 #pragma once
 #include "uestc_wifi.hpp"
-#include "uestc_wifi_config.hpp"
+
+
+UESTC_WIFI_HELPER_NS_BEGIN(config)
+
+struct UESTCWifiConfig {
+    std::string username;
+    std::string password;
+    uint32_t network_operator;
+    uint32_t check_interval;
+};
+
+UESTCWifiConfig load_from_file(std::string_view file);
+
+UESTC_WIFI_HELPER_NS_END
 
 
 UESTC_WIFI_HELPER_NS_BEGIN()

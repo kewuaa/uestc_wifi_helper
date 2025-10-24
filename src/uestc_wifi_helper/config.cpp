@@ -3,7 +3,7 @@
 
 #include <toml++/toml.hpp>
 
-#include "uestc_wifi_config.hpp"
+#include "uestc_wifi_helper.hpp"
 
 
 UESTC_WIFI_HELPER_NS_BEGIN(config)

@@ -17,7 +17,7 @@ namespace {
 using namespace std::chrono;
 using namespace uestc_wifi_helper;
 #define CHECK_RESULT(result) if (!result) {                                \
-    SPDLOG_ERROR("httplib error: {}", httplib::to_string(result.error()));  \
+    SPDLOG_ERROR("httplib error: {}", httplib::to_string(result.error())); \
     return std::unexpected(UESTCWifi::Error::HttplibError);                \
 }
 
