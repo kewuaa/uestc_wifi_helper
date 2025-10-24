@@ -1,10 +1,10 @@
 #include <ranges>
 
-#include "CLI/App.hpp"
-#include "spdlog/spdlog.h"
-#include "CLI/Config.hpp"
-#include "CLI/Formatter.hpp"
-#include "magic_enum/magic_enum.hpp"
+#include <CLI/App.hpp>
+#include <spdlog/spdlog.h>
+#include <CLI/Config.hpp>
+#include <CLI/Formatter.hpp>
+#include <magic_enum/magic_enum.hpp>
 
 #include "uestc_wifi.hpp"
 using namespace std::ranges;

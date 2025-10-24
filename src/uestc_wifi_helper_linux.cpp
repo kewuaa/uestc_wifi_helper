@@ -1,9 +1,9 @@
 #include <chrono>
 #include <sys/poll.h>
 
-#include "spdlog/spdlog.h"
-#include "sdbus-c++/sdbus-c++.h"
-#include "magic_enum/magic_enum.hpp"
+#include <spdlog/spdlog.h>
+#include <sdbus-c++/sdbus-c++.h>
+#include <magic_enum/magic_enum.hpp>
 
 #include "uestc_wifi_helper.hpp"
 

@@ -2,7 +2,7 @@
 #include <string>
 #include <expected>
 
-#include "magic_enum/magic_enum.hpp"
+#include <magic_enum/magic_enum.hpp>
 
 #include "uestc_wifi_helper_ns.hpp"
 

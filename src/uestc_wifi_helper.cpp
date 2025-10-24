@@ -1,8 +1,8 @@
 #include <filesystem>
 #include <string_view>
 
-#include "magic_enum/magic_enum.hpp"
-#include "spdlog/spdlog.h"
+#include <magic_enum/magic_enum.hpp>
+#include <spdlog/spdlog.h>
 
 #include "uestc_wifi_helper.hpp"
 

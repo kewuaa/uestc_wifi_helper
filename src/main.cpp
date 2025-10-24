@@ -1,12 +1,12 @@
 #include <signal.h>
 #include <filesystem>
 
-#include "CLI/CLI.hpp"
-#include "CLI/Config.hpp"
-#include "CLI/Formatter.hpp"
-#include "CLI/Validators.hpp"
-#include "spdlog/spdlog.h"
-#include "spdlog/sinks/basic_file_sink.h"
+#include <CLI/CLI.hpp>
+#include <CLI/Config.hpp>
+#include <CLI/Formatter.hpp>
+#include <CLI/Validators.hpp>
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/basic_file_sink.h>
 
 #include "uestc_wifi_helper.hpp"
 namespace fs = std::filesystem;
