@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.15)
 
 project(uestc_wifi_helper LANGUAGES C CXX)
 
+if (CMAKE_SYSTEM_NAME STREQUAL Darwin)
+    message(FATEL "not support Darwin yet")
+endif()
+
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_FLAG_DEBUG "-O0 -Wall -g -ggdb")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -83,6 +87,4 @@ if (CMAKE_SYSTEM_NAME STREQUAL Linux)
     target_link_libraries(uestc_wifi_helper PRIVATE sdbus-c++)
 elseif (CMAKE_SYSTEM_NAME STREQUAL Windows)
     target_sources(uestc_wifi_helper PRIVATE src/uestc_wifi_helper_windows.cpp)
-elseif (CMAKE_SYSTEM_NAME STREQUAL Darwin)
-    message(FATAL "not support yet")
 endif()
