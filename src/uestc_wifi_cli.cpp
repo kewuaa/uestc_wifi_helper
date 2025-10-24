@@ -1,11 +1,10 @@
-#include <ranges>
-
 #include <CLI/App.hpp>
 #include <spdlog/spdlog.h>
 #include <CLI/Config.hpp>
 #include <CLI/Formatter.hpp>
 #include <magic_enum/magic_enum.hpp>
 
+#include "./utils.hpp"
 #include "uestc_wifi.hpp"
 using namespace std::ranges;
 using namespace UESTC_WIFI_HELPER_NS;
@@ -19,11 +18,6 @@ int main(int argc, char** argv) {
     std::string password;
     UESTCWifi::NetworkOperator op;
 
-    std::string operator_names;
-    for (auto c : magic_enum::enum_names<UESTCWifi::NetworkOperator>()|views::join_with(',')) {
-        operator_names.push_back(c);
-    }
-
     app.add_option("--username,-n", username, "login username")->required();
     app.add_option("--password,-p", password, "login password")->required();
     app.add_option_function<std::string>(
@@ -31,7 +25,7 @@ int main(int argc, char** argv) {
         [&op](const std::string& str) {
             op = *magic_enum::enum_cast<UESTCWifi::NetworkOperator>(str);
         },
-        std::format("network operator({})", operator_names)
+        std::format("network operator({})", utils::join_enum<UESTCWifi::NetworkOperator>())
     )
         ->check([](const std::string& str) {
             if (!magic_enum::enum_contains<UESTCWifi::NetworkOperator>(str)) {
