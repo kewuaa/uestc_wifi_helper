@@ -4,12 +4,13 @@
 
 #include <magic_enum/magic_enum.hpp>
 
+#include "uestc_wifi_export.hpp"
 #include "uestc_wifi_helper_ns.hpp"
 
 
 UESTC_WIFI_HELPER_NS_BEGIN()
 
-class UESTCWifi {
+class UESTC_WIFI_EXPORT UESTCWifi {
 public:
     enum class NetworkOperator {
         // 寝室电信

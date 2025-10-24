@@ -17,6 +17,7 @@ if (NOT CMAKE_BUILD_TYPE)
 endif()
 
 include(cmake/CPM.cmake)
+include(GenerateExportHeader)
 
 CPMAddPackage("gh:CLIUtils/CLI11@2.5.0")
 CPMAddPackage("gh:nlohmann/json@3.12.0")
@@ -50,8 +51,18 @@ if (CMAKE_BUILD_TYPE STREQUAL Debug)
 endif()
 
 add_library(uestc_wifi_lib)
+generate_export_header(
+    uestc_wifi_lib
+    BASE_NAME uestc_wifi
+    EXPORT_FILE_NAME ${CMAKE_BINARY_DIR}/uestc_wifi_export.hpp
+)
 target_compile_options(uestc_wifi_lib PUBLIC -UCPPHTTPLIB_ZLIB_SUPPORT)
-target_include_directories(uestc_wifi_lib PUBLIC include)
+target_include_directories(
+    uestc_wifi_lib
+    PUBLIC
+        include
+        ${CMAKE_BINARY_DIR}
+)
 target_sources(
     uestc_wifi_lib
     PRIVATE
