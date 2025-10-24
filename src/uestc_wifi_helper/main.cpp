@@ -31,19 +31,6 @@ int main(int argc, char** argv) {
     fs::path home { std::getenv("HOME") };
 
     app.add_option_function<std::string>(
-        "--config,-c",
-        [](const std::string& path) {
-            static UESTCWifiHelper wifi_helper { path };
-            helper = &wifi_helper;
-        },
-        "config file path"
-    )
-        ->check(CLI::ExistingFile)
-        ->default_val((home/"uestc_wifi.toml").string())
-        ->run_callback_for_default()
-        ->capture_default_str();
-
-    app.add_option_function<std::string>(
         "--log,-l",
         [](const std::string& path) {
             auto logger = spdlog::basic_logger_mt("uestc_wifi_helper", path);
@@ -51,8 +38,8 @@ int main(int argc, char** argv) {
         },
         "logging file path"
     )
-        ->default_val((home/"uestc_wifi.log").string())
         ->run_callback_for_default()
+        ->default_val((home/"uestc_wifi.log").string())
         ->capture_default_str();
 
     app.add_flag_callback(
@@ -62,6 +49,19 @@ int main(int argc, char** argv) {
         },
         "enable debug mode"
     );
+
+    app.add_option_function<std::string>(
+        "--config,-c",
+        [](const std::string& path) {
+            static UESTCWifiHelper wifi_helper { path };
+            helper = &wifi_helper;
+        },
+        "config file path"
+    )
+        ->check(CLI::ExistingFile)
+        ->run_callback_for_default()
+        ->default_val((home/"uestc_wifi.toml").string())
+        ->capture_default_str();
 
     CLI11_PARSE(app, argc, argv);
 

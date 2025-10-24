@@ -35,9 +35,9 @@ int main(int argc, char** argv) {
             }
             return "";
         })
+        ->run_callback_for_default()
         ->default_val("CTCC")
-        ->capture_default_str()
-        ->run_callback_for_default();
+        ->capture_default_str();
 
     app.add_flag_callback("--dry-run", [&]() {
         SPDLOG_INFO(
