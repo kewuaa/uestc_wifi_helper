@@ -24,7 +24,7 @@ CPMAddPackage("gh:Neargye/magic_enum@0.9.7")
 CPMAddPackage("gh:yhirose/cpp-httplib@0.26.0")
 CPMAddPackage("gh:marzer/tomlplusplus#v3.4.0")
 CPMAddPackage(
-    NAME cryptopp
+    NAME cryptopp-cmake
     GIT_REPOSITORY "https://github.com/abdes/cryptopp-cmake.git"
     GIT_TAG CRYPTOPP_8_9_0
     OPTIONS "CRYPTOPP_BUILD_TESTING=OFF"
