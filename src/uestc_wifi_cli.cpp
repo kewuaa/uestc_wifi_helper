@@ -11,15 +11,17 @@ using namespace UESTC_WIFI_HELPER_NS;
 
 
 int main(int argc, char** argv) {
-    CLI::App app;
-    argv = app.ensure_utf8(argv);
-
     std::string username;
     std::string password;
     UESTCWifi::NetworkOperator op;
 
+    CLI::App app;
+    argv = app.ensure_utf8(argv);
+
     app.add_option("--username,-n", username, "login username")->required();
+
     app.add_option("--password,-p", password, "login password")->required();
+
     app.add_option_function<std::string>(
         "--operator,-o",
         [&op](const std::string& str) {
@@ -34,7 +36,9 @@ int main(int argc, char** argv) {
             return "";
         })
         ->default_val("CTCC")
-        ->capture_default_str();
+        ->capture_default_str()
+        ->run_callback_for_default();
+
     app.add_flag_callback("--dry-run", [&]() {
         SPDLOG_INFO(
             "\n"
@@ -50,6 +54,7 @@ int main(int argc, char** argv) {
         );
         exit(0);
     });
+
     CLI11_PARSE(app, argc, argv);
 
     UESTCWifi wifi(username, password, op);
