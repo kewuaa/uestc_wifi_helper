@@ -82,6 +82,13 @@ target_link_libraries(
         magic_enum::magic_enum
         nlohmann_json::nlohmann_json
 )
+# windows 下 mingw 经测试找不到 GetAddrInfoExCancel
+if (CMAKE_SYSTEM_NAME STREQUAL Windows AND MINGW)
+    target_compile_definitions(
+        uestc_wifi_lib
+        PUBLIC -UCPPHTTPLIB_USE_NON_BLOCKING_GETADDRINFO
+    )
+endif()
 
 add_executable(uestc_wifi)
 target_sources(uestc_wifi PRIVATE src/uestc_wifi/main.cpp)
