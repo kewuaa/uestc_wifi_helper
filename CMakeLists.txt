@@ -46,6 +46,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL Linux)
     CPMAddPackage("gh:Kistler-Group/sdbus-cpp@2.1.0")
 endif()
 
+if (CMAKE_SYSTEM_NAME STREQUAL Windows AND MSVC)
+    add_compile_options("/Zc:preprocessor")
+endif()
+
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
     add_definitions(-DSPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG)
 endif()
