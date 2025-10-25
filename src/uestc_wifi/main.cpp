@@ -6,7 +6,6 @@
 
 #include "./utils.hpp"
 #include "uestc_wifi.hpp"
-using namespace std::ranges;
 using namespace UESTC_WIFI_HELPER_NS;
 
 
