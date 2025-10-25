@@ -1,4 +1,3 @@
-#pragma once
 #include <format>
 
 #include <toml++/toml.hpp>
