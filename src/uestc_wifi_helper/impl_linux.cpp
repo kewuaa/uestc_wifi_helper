@@ -81,7 +81,7 @@ void UESTCWifiHelper::run() const {
                 "uestc_wifi_helper",
                 0u,
                 "",
-                "UESTC Wifi 助手",
+                TITLE,
                 text,
                 std::vector<std::string>(),
                 std::unordered_map<std::string, sdbus::Variant>(),

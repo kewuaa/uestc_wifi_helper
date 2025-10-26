@@ -20,6 +20,8 @@ UESTC_WIFI_HELPER_NS_BEGIN()
 
 class UESTCWifiHelper {
 public:
+    static constexpr const char* TITLE { "UESTC Wifi 助手" };
+
     UESTCWifiHelper(std::string_view config_path);
     UESTCWifiHelper(UESTCWifiHelper&&) = default;
     UESTCWifiHelper(const UESTCWifiHelper&) = delete;
