@@ -27,6 +27,14 @@ public:
     UESTCWifiHelper(const UESTCWifiHelper&) = delete;
     void run() const;
     void stop() const;
+
+    inline auto check_online() const {
+        return uestc_wifi_.check_online();
+    }
+
+    inline bool is_running() const {
+        return running_;
+    }
 private:
     mutable bool running_ { false };
     config::UESTCWifiConfig config_;
