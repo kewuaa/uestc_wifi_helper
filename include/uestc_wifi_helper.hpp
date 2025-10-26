@@ -22,11 +22,12 @@ class UESTCWifiHelper {
 public:
     static constexpr const char* TITLE { "UESTC Wifi 助手" };
 
-    UESTCWifiHelper(std::string_view config_path);
-    UESTCWifiHelper(UESTCWifiHelper&&) = default;
+    UESTCWifiHelper(UESTCWifiHelper&&) = delete;
     UESTCWifiHelper(const UESTCWifiHelper&) = delete;
     void run() const;
     void stop() const;
+    static UESTCWifiHelper& init(std::string_view config_path = "");
+    static void set_signal_handle();
 
     inline auto check_online() const {
         return uestc_wifi_.check_online();
@@ -39,6 +40,8 @@ private:
     mutable bool running_ { false };
     config::UESTCWifiConfig config_;
     UESTCWifi uestc_wifi_;
+
+    UESTCWifiHelper(std::string_view config_path);
 };
 
 UESTC_WIFI_HELPER_NS_END

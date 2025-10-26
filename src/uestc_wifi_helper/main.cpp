@@ -1,4 +1,3 @@
-#include <signal.h>
 #include <filesystem>
 
 #include <CLI/CLI.hpp>
@@ -11,16 +10,6 @@
 #include "uestc_wifi_helper.hpp"
 namespace fs = std::filesystem;
 using namespace UESTC_WIFI_HELPER_NS;
-
-
-UESTCWifiHelper* helper { nullptr };
-
-
-void exit_helper(int sig) {
-    if (sig == SIGINT || sig == SIGTERM) {
-        helper->stop();
-    }
-}
 
 
 int main(int argc, char** argv) {
@@ -52,10 +41,7 @@ int main(int argc, char** argv) {
 
     app.add_option_function<std::string>(
         "--config,-c",
-        [](const std::string& path) {
-            static UESTCWifiHelper wifi_helper { path };
-            helper = &wifi_helper;
-        },
+        UESTCWifiHelper::init,
         "config file path"
     )
         ->check(CLI::ExistingFile)
@@ -65,7 +51,6 @@ int main(int argc, char** argv) {
 
     CLI11_PARSE(app, argc, argv);
 
-    signal(SIGINT, exit_helper);
-    signal(SIGTERM, exit_helper);
-    helper->run();
+    UESTCWifiHelper::set_signal_handle();
+    UESTCWifiHelper::init().run();
 }

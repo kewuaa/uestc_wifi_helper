@@ -39,4 +39,9 @@ void UESTCWifiHelper::stop() const {
     SPDLOG_INFO("uestc wifi helper stopped");
 }
 
+UESTCWifiHelper& UESTCWifiHelper::init(std::string_view config_path) {
+    static UESTCWifiHelper singleton(config_path);
+    return singleton;
+}
+
 UESTC_WIFI_HELPER_NS_END

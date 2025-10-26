@@ -1,4 +1,5 @@
 #include <chrono>
+#include <signal.h>
 #include <sys/poll.h>
 
 #include <spdlog/spdlog.h>
@@ -9,6 +10,7 @@
 
 
 namespace {
+using namespace UESTC_WIFI_HELPER_NS;
 
 constexpr const char* NOTIFY_SERVICE = "org.freedesktop.Notifications";
 constexpr const char* NOTIFY_PATH = "/org/freedesktop/Notifications";
@@ -32,6 +34,14 @@ enum class NMState {
     CONNECTED_SITE = 60,
     CONNECTED_GLOBAL = 70
 };
+
+void exit_helper(int sig) {
+    switch (sig) {
+        case SIGINT:
+        case SIGTERM:
+            UESTCWifiHelper::init().stop();
+    }
+}
 
 }
 
@@ -158,6 +168,11 @@ void UESTCWifiHelper::run() const {
         sys_conn->processPendingEvent();
     }
     notify("程序已退出");
+}
+
+void UESTCWifiHelper::set_signal_handle() {
+    signal(SIGINT, exit_helper);
+    signal(SIGTERM, exit_helper);
 }
 
 UESTC_WIFI_HELPER_NS_END
