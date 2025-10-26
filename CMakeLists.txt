@@ -28,7 +28,7 @@ CPMAddPackage(
     NAME cryptopp-cmake
     GIT_REPOSITORY "https://github.com/abdes/cryptopp-cmake.git"
     GIT_TAG CRYPTOPP_8_9_0
-    OPTIONS "CRYPTOPP_BUILD_TESTING=OFF"
+    OPTIONS "CRYPTOPP_BUILD_TESTING OFF"
 )
 
 find_package(spdlog)
@@ -38,7 +38,7 @@ if (NOT spdlog_FOUND)
         NAME spdlog
         GIT_REPOSITORY "https://github.com/gabime/spdlog.git"
         GIT_TAG v1.16.0
-        OPTIONS "SPDLOG_USE_STD_FORMAT=TRUE"
+        OPTIONS "SPDLOG_USE_STD_FORMAT TRUE"
     )
 endif()
 
