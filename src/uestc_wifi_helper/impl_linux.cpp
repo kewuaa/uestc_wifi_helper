@@ -103,43 +103,7 @@ void UESTCWifiHelper::run() const {
     milliseconds check_interval = seconds(config_.check_interval);
     while (running_) {
         if (connected_global) {
-            if (auto state = uestc_wifi_.check_online(); state.has_value()) {
-                auto [online, ip] = *state;
-                if (!online) {
-                    notify("检测到用户已下线");
-                    auto res = uestc_wifi_.login(ip);
-                    if (res) {
-                        SPDLOG_DEBUG("login successfully");
-                        notify("登陆成功，用户已重新上线");
-                    } else {
-                        SPDLOG_ERROR("login failed: {}", UESTCWifi::translate_error(res.error()));
-                        switch (res.error()) {
-                            case UESTCWifi::Error::IncorrectUsernameOrPassword: {
-                                notify("用户名或密码错误，请检查配置文件");
-                                stop();
-                                break;
-                            }
-                            case UESTCWifi::Error::DeviceWithinScope: {
-                                notify("设备不再范围内");
-                                stop();
-                                break;
-                            }
-                            case UESTCWifi::Error::AuthRequestsFrequently: {
-                                notify("认证请求过于频繁，建议增加检查间隔时间");
-                                stop();
-                                break;
-                            }
-                            default: {
-                                break;
-                            }
-                        }
-                    }
-                } else {
-                    SPDLOG_DEBUG("already online: {}", ip);
-                }
-            } else {
-                SPDLOG_ERROR("check online failed: {}", UESTCWifi::translate_error(state.error()));
-            }
+            check_once(notify);
         }
 
         if (!running_) {

@@ -44,4 +44,50 @@ UESTCWifiHelper& UESTCWifiHelper::init(std::string_view config_path) {
     return singleton;
 }
 
+void UESTCWifiHelper::check_once(const std::function<void(std::string_view)>& notify) const {
+    std::string msg;
+    if (auto state = uestc_wifi_.check_online(); state.has_value()) {
+        auto [online, ip] = *state;
+        if (online) {
+            SPDLOG_DEBUG("already online: {}", ip);
+            return;
+        } else {
+            if (notify) notify("检测到用户已下线");
+            auto res = uestc_wifi_.login(ip);
+            if (res) {
+                SPDLOG_DEBUG("login successfully");
+                msg = "登陆成功，用户已重新上线";
+            } else {
+                SPDLOG_ERROR("login failed: {}", UESTCWifi::translate_error(res.error()));
+                switch (res.error()) {
+                    case UESTCWifi::Error::IncorrectUsernameOrPassword: {
+                        msg = "用户名或密码错误，请检查配置文件";
+                        stop();
+                        break;
+                    }
+                    case UESTCWifi::Error::DeviceWithinScope: {
+                        msg = "设备不在范围内";
+                        stop();
+                        break;
+                    }
+                    case UESTCWifi::Error::AuthRequestsFrequently: {
+                        msg = "认证请求过于频繁，建议增加检查间隔时间";
+                        stop();
+                        break;
+                    }
+                    case UESTCWifi::Error::HttplibError: {
+                        msg = std::format("unexpected error: {}", UESTCWifi::translate_error(res.error()));
+                        break;
+                    }
+                    case UESTCWifi::Error::NetworkConnectionTimeout: return;
+                }
+            }
+        }
+    } else {
+        SPDLOG_ERROR("check online failed: {}", UESTCWifi::translate_error(state.error()));
+        msg = std::format("unexpected error: {}", UESTCWifi::translate_error(state.error()));
+    }
+    if (notify) notify(msg);
+}
+
 UESTC_WIFI_HELPER_NS_END

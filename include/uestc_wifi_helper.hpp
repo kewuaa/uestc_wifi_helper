@@ -28,10 +28,7 @@ public:
     void stop() const;
     static UESTCWifiHelper& init(std::string_view config_path = "");
     static void set_signal_handle();
-
-    inline auto check_online() const {
-        return uestc_wifi_.check_online();
-    }
+    void check_once(const std::function<void(std::string_view)>& notify) const;
 
     inline bool is_running() const {
         return running_;
