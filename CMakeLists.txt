@@ -84,7 +84,7 @@ target_link_libraries(
 )
 # windows 下 mingw 经测试找不到 GetAddrInfoExCancel
 if (CMAKE_SYSTEM_NAME STREQUAL Windows AND MINGW)
-    target_compile_definitions(
+    target_compile_options(
         uestc_wifi_lib
         PUBLIC -UCPPHTTPLIB_USE_NON_BLOCKING_GETADDRINFO
     )
