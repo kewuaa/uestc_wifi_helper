@@ -1,10 +1,12 @@
 #pragma once
 #include <string>
 #include <ranges>
+#include <filesystem>
 
 #include <magic_enum/magic_enum.hpp>
 
 #include "uestc_wifi_helper_ns.hpp"
+namespace fs = std::filesystem;
 using namespace std::ranges;
 
 
@@ -17,6 +19,16 @@ std::string join_enum() {
         res.push_back(c);
     }
     return res;
+}
+
+inline fs::path home_path() {
+    return std::getenv(
+#ifdef __linux__
+        "HOME"
+#elifdef _WIN32
+        "USERPROFILE"
+#endif
+    );
 }
 
 UESTC_WIFI_HELPER_NS_END

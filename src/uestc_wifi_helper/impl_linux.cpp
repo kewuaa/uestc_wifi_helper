@@ -60,8 +60,8 @@ void UESTCWifiHelper::run() const {
     auto notify_proxy = sdbus::createProxy(*conn.get(), sdbus::ServiceName(NOTIFY_SERVICE), sdbus::ObjectPath(NOTIFY_PATH));
     auto nm_proxy = sdbus::createProxy(*sys_conn.get(), sdbus::ServiceName(NM_SERVICE), sdbus::ObjectPath(NM_PATH));
     auto state = nm_proxy->getProperty("State").onInterface(NM_INTERFACE).get<uint32_t>();
-    bool connected_global = state == (uint32_t)NMState::CONNECTED_SITE || state == (uint32_t)NMState::CONNECTED_GLOBAL;
-    nm_proxy->uponSignal(NM_SIGNAL).onInterface(NM_INTERFACE).call([&connected_global](uint32_t state) {
+    bool local_connected = state == (uint32_t)NMState::CONNECTED_SITE || state == (uint32_t)NMState::CONNECTED_GLOBAL;
+    nm_proxy->uponSignal(NM_SIGNAL).onInterface(NM_INTERFACE).call([&local_connected](uint32_t state) {
         SPDLOG_DEBUG(
             "NetworkManager state changed, new state: ({})",
             magic_enum::enum_name(*magic_enum::enum_cast<NMState>(state))
@@ -71,12 +71,12 @@ void UESTCWifiHelper::run() const {
             case NMState::ASLEEP:
             case NMState::DISCONNECTED:
             case NMState::CONNECTED_LOCAL: {
-                connected_global = false;
+                local_connected = false;
                 break;
             }
             case NMState::CONNECTED_SITE:
             case NMState::CONNECTED_GLOBAL: {
-                connected_global = true;
+                local_connected = true;
                 break;
             }
             default: {
@@ -102,7 +102,7 @@ void UESTCWifiHelper::run() const {
     running_ = true;
     milliseconds check_interval = seconds(config_.check_interval);
     while (running_) {
-        if (connected_global) {
+        if (local_connected) {
             check_once(notify);
         }
 
@@ -116,7 +116,7 @@ void UESTCWifiHelper::run() const {
         if (data.timeout.count() > 0) {
             timeout = std::min(timeout, data.timeout.count());
         }
-        if (!connected_global) {
+        if (!local_connected) {
             timeout = -1;
         }
         fd.fd = data.fd;

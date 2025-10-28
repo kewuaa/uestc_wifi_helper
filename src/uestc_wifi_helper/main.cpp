@@ -1,5 +1,3 @@
-#include <filesystem>
-
 #include <CLI/CLI.hpp>
 #include <CLI/Config.hpp>
 #include <CLI/Formatter.hpp>
@@ -7,8 +5,8 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h>
 
+#include "utils.hpp"
 #include "uestc_wifi_helper.hpp"
-namespace fs = std::filesystem;
 using namespace UESTC_WIFI_HELPER_NS;
 
 
@@ -17,7 +15,7 @@ int main(int argc, char** argv) {
     argv = app.ensure_utf8(argv);
 
     std::string config_path;
-    fs::path home { std::getenv("HOME") };
+    auto home = utils::home_path();
 
     app.add_option_function<std::string>(
         "--log,-l",
