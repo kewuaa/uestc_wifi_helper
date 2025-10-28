@@ -12,6 +12,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN TRUE)
 
+set(UESTC_WIFI_ONLY CACHE BOOL FALSE "if only build uestc_wifi or not")
+
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
@@ -22,12 +24,16 @@ include(GenerateExportHeader)
 CPMAddPackage("gh:CLIUtils/CLI11@2.5.0")
 CPMAddPackage("gh:nlohmann/json@3.12.0")
 CPMAddPackage("gh:Neargye/magic_enum@0.9.7")
-CPMAddPackage("gh:yhirose/cpp-httplib@0.26.0")
 CPMAddPackage("gh:marzer/tomlplusplus#v3.4.0")
 CPMAddPackage(
-    NAME cryptopp-cmake
-    GIT_REPOSITORY "https://github.com/abdes/cryptopp-cmake.git"
-    GIT_TAG CRYPTOPP_8_9_0
+    URI "gh:yhirose/cpp-httplib@0.26.0"
+    OPTIONS
+        "HTTPLIB_USE_OPENSSL_IF_AVAILABLE OFF"
+        "HTTPLIB_USE_ZLIB_IF_AVAILABLE OFF"
+        "HTTPLIB_USE_BROTLI_IF_AVAILABLE OFF"
+)
+CPMAddPackage(
+    URI "gh:abdes/cryptopp-cmake#CRYPTOPP_8_9_0"
     OPTIONS "CRYPTOPP_BUILD_TESTING OFF"
 )
 
@@ -35,16 +41,11 @@ find_package(spdlog)
 if (NOT spdlog_FOUND)
     message(STATUS "spdlog not found in system, download it by CPM")
     CPMAddPackage(
-        NAME spdlog
-        GIT_REPOSITORY "https://github.com/gabime/spdlog.git"
-        GIT_TAG v1.16.0
+        URI "gh:gabime/spdlog@1.16.0"
         OPTIONS "SPDLOG_USE_STD_FORMAT TRUE"
     )
 endif()
 
-if (CMAKE_SYSTEM_NAME STREQUAL Linux)
-    CPMAddPackage("gh:Kistler-Group/sdbus-cpp@2.1.0")
-endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL Windows AND MSVC)
     add_compile_options("/Zc:preprocessor")
@@ -60,7 +61,6 @@ generate_export_header(
     BASE_NAME uestc_wifi
     EXPORT_FILE_NAME ${CMAKE_BINARY_DIR}/uestc_wifi_export.hpp
 )
-target_compile_options(uestc_wifi_lib PUBLIC -UCPPHTTPLIB_ZLIB_SUPPORT)
 target_include_directories(
     uestc_wifi_lib
     PUBLIC
@@ -76,8 +76,8 @@ target_sources(
 target_link_libraries(
     uestc_wifi_lib
     PUBLIC
-        httplib
         spdlog::spdlog
+        httplib::httplib
         cryptopp::cryptopp
         magic_enum::magic_enum
         nlohmann_json::nlohmann_json
@@ -98,6 +98,14 @@ target_link_libraries(
         CLI11::CLI11
         uestc_wifi_lib
 )
+
+if (UESTC_WIFI_ONLY)
+    return()
+endif()
+
+if (CMAKE_SYSTEM_NAME STREQUAL Linux)
+    CPMAddPackage("gh:Kistler-Group/sdbus-cpp@2.1.0")
+endif()
 
 add_executable(uestc_wifi_helper)
 target_sources(
