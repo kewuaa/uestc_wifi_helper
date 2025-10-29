@@ -45,6 +45,7 @@ UESTCWifiHelper& UESTCWifiHelper::init(std::string_view config_path) {
 }
 
 void UESTCWifiHelper::check_once(const std::function<void(std::string_view)>& notify) const {
+    static int http_error_count = 0;
     std::string msg;
     if (auto state = uestc_wifi_.check_online(); state.has_value()) {
         auto [online, ip] = *state;
@@ -59,6 +60,11 @@ void UESTCWifiHelper::check_once(const std::function<void(std::string_view)>& no
                 msg = "登陆成功，用户已重新上线";
             } else {
                 SPDLOG_ERROR("login failed: {}", UESTCWifi::translate_error(res.error()));
+                if (res.error() == UESTCWifi::Error::HttplibError) {
+                    ++http_error_count;
+                } else {
+                    http_error_count = 0;
+                }
                 switch (res.error()) {
                     case UESTCWifi::Error::IncorrectUsernameOrPassword: {
                         msg = "用户名或密码错误，请检查配置文件";
@@ -76,8 +82,11 @@ void UESTCWifiHelper::check_once(const std::function<void(std::string_view)>& no
                         break;
                     }
                     case UESTCWifi::Error::HttplibError: {
-                        msg = std::format("unexpected error: {}", UESTCWifi::translate_error(res.error()));
-                        break;
+                        if (http_error_count > 3) {
+                            msg = std::format("unexpected error: {}", UESTCWifi::translate_error(res.error()));
+                            stop();
+                            break;
+                        } else return;
                     }
                     case UESTCWifi::Error::NetworkConnectionTimeout: return;
                 }
