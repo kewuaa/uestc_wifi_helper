@@ -38,7 +38,6 @@ BOOL WINAPI exit_helper(DWORD sig) {
         case CTRL_SHUTDOWN_EVENT:
             UESTCWifiHelper::init().stop();
             tray_message(wtitle.c_str(), L"正在退出...");
-            std::this_thread::sleep_for(std::chrono::seconds(1));
             tray_exit();
             return TRUE;
         default: return FALSE;
@@ -89,7 +88,7 @@ void UESTCWifiHelper::run() const {
     running_ = true;
     int t = 0;
     int T = config_.check_interval * 10;
-    while (running_ && tray_loop(0) == 0) {
+    while (tray_loop(0) == 0) {
         if (t == 0 && local_connected) {
             check_once(notify);
         }
