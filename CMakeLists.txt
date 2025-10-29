@@ -142,6 +142,7 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL Windows)
     target_sources(
         uestc_wifi_helper
         PRIVATE
+            icon.rc
             src/nlm.cpp
             src/uestc_wifi_helper/impl_windows.cpp
     )
