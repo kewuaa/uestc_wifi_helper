@@ -1,4 +1,4 @@
-#include <windows.h>
+﻿#include <windows.h>
 
 #include <spdlog/spdlog.h>
 #include <wil/winrt.h>
@@ -113,7 +113,6 @@ void UESTCWifiHelper::run() const {
             check_once(notify);
         }
         if (!running_) {
-            std::this_thread::sleep_for(seconds(1));
             break;
         }
         SPDLOG_DEBUG("sleep {} seconds", config_.check_interval);
