@@ -110,10 +110,6 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL Windows)
         URI "gh:microsoft/wil@1.0.250325.1"
         OPTIONS "WIL_BUILD_TESTS OFF" "WIL_BUILD_PACKAGING OFF"
     )
-    CPMAddPackage(
-        URI "gh:mohabouje/WinToast@1.3.2"
-        OPTIONS "WINTOASTLIB_BUILD_EXAMPLES FALSE"
-    )
 endif()
 
 add_executable(uestc_wifi_helper)
@@ -144,7 +140,8 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL Windows)
         PRIVATE
             icon.rc
             src/nlm.cpp
+            src/uestc_wifi_helper/tray_windows.c
             src/uestc_wifi_helper/impl_windows.cpp
     )
-    target_link_libraries(uestc_wifi_helper PRIVATE WIL::WIL WinToast)
+    target_link_libraries(uestc_wifi_helper PRIVATE WIL::WIL)
 endif()

@@ -1,28 +1,19 @@
-﻿#include <windows.h>
+﻿#include <queue>
+#include <windows.h>
 
 #include <spdlog/spdlog.h>
 #include <wil/winrt.h>
-#include <wintoastlib.h>
 
+#include "tray.h"
 #include "nlm.hpp"
 #include "uestc_wifi_helper.hpp"
+#ifndef _DEBUG
+#pragma comment(linker, "/subsystem:\"Windows\" /entry:\"mainCRTStartup\"")
+#endif
 
 
 namespace {
 using namespace UESTC_WIFI_HELPER_NS;
-using namespace WinToastLib;
-
-BOOL WINAPI exit_helper(DWORD sig) {
-    switch (sig) {
-        case CTRL_C_EVENT:
-        case CTRL_CLOSE_EVENT:
-        case CTRL_BREAK_EVENT:
-        case CTRL_SHUTDOWN_EVENT:
-            UESTCWifiHelper::init().stop();
-            return TRUE;
-        default: return FALSE;
-    }
-}
 
 std::wstring to_wstring(std::string_view str) {
     if (str.empty()) return {};
@@ -32,24 +23,28 @@ std::wstring to_wstring(std::string_view str) {
     return wide_str;
 }
 
-std::string from_wstring(std::wstring_view wstr) {
-    if (wstr.empty()) return {};
-    int size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr.data(), static_cast<int>(wstr.size()), nullptr, 0, nullptr, nullptr);
-    std::string str(size_needed, '\0');
-    WideCharToMultiByte(CP_UTF8, 0, wstr.data(), static_cast<int>(wstr.size()), str.data(), size_needed, nullptr, nullptr);
-    return str;
+void quit_cb(struct tray_menu_item* item) {
+    UESTCWifiHelper::init().stop();
+    tray_exit();
 }
 
-class WinToastHandlerExample : public IWinToastHandler {
-public:
-    WinToastHandlerExample() {}
-
-    void toastActivated() const override {}
-    void toastActivated(int actionIndex) const override {}
-    void toastActivated(std::wstring response) const override {}
-    void toastDismissed(WinToastDismissalReason state) const override {}
-    void toastFailed() const override {}
-};
+#ifdef _DEBUG
+BOOL WINAPI exit_helper(DWORD sig) {
+    auto wtitle = to_wstring(UESTCWifiHelper::TITLE);
+    switch (sig) {
+        case CTRL_C_EVENT:
+        case CTRL_CLOSE_EVENT:
+        case CTRL_BREAK_EVENT:
+        case CTRL_SHUTDOWN_EVENT:
+            UESTCWifiHelper::init().stop();
+            tray_message(wtitle.c_str(), L"正在退出...");
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            tray_exit();
+            return TRUE;
+        default: return FALSE;
+    }
+}
+#endif
 
 }
 
@@ -59,7 +54,6 @@ UESTC_WIFI_HELPER_NS_BEGIN()
 void UESTCWifiHelper::run() const {
     using namespace nlm;
     using namespace std::chrono;
-    using namespace WinToastLib;
 
     auto coinit = wil::CoInitializeEx_failfast(COINIT_MULTITHREADED);
 
@@ -72,56 +66,46 @@ void UESTCWifiHelper::run() const {
     });
 
     const std::wstring wtitle = to_wstring(UESTCWifiHelper::TITLE);
-    std::function<void(std::string_view)> notify{ nullptr };
-    if (!WinToast::isCompatible()) {
-        SPDLOG_WARN("WinToast is not compatible with this system.");
-    } else {
-        auto instance = WinToast::instance();
-        instance->setAppName(L"uestc_wifi_helper");
-        const auto aumi = WinToast::configureAUMI(L"kewuaa", L"uestc_wifi_helper", L"notification", L"20230901");
-        instance->setAppUserModelId(aumi);
-
-        WinToast::WinToastError error;
-        const auto succeeded = instance->initialize(&error);
-        if (!succeeded) {
-            SPDLOG_ERROR(
-                "WinToast initialization failed: {}",
-                from_wstring(WinToast::strerror(error))
-            );
-        } else {
-            notify = [error = std::move(error)](std::string_view msg) mutable {
-                auto handler = new WinToastHandlerExample();
-                WinToastTemplate toast(WinToastTemplate::Text02);
-                toast.setFirstLine(to_wstring(UESTCWifiHelper::TITLE));
-                toast.setSecondLine(to_wstring(msg));
-                toast.setDuration(WinToastTemplate::Short);
-                auto id = WinToast::instance()->showToast(toast, handler, &error);
-                if (id < 0) {
-                    SPDLOG_ERROR(
-                        "Failed to show toast notification: {}",
-                        from_wstring(WinToast::strerror(error))
-                    );
-                }
-            };
-        }
+    tray_menu_item menu_items[] = {
+        { .text = "quit" , .cb = quit_cb },
+        { .text = NULL }
+    };
+    struct tray tray = {
+        .icon_filepath = __argv[0],
+        .tooltip = wtitle.c_str(),
+        .cb = nullptr,
+        .menu = menu_items,
+    };
+    if (tray_init(&tray) < 0) {
+        SPDLOG_ERROR("Failed to initialize system tray icon.");
+        return;
     }
 
+    std::queue<std::wstring> msg_qq;
+    std::function<void(std::string_view)> notify = [&msg_qq](std::string_view msg) {
+        msg_qq.push(to_wstring(msg));
+    };
 
     running_ = true;
-    while (running_) {
-        if (local_connected) {
+    int t = 0;
+    int T = config_.check_interval * 10;
+    while (running_ && tray_loop(0) == 0) {
+        if (t == 0 && local_connected) {
             check_once(notify);
         }
-        if (!running_) {
-            break;
+        if (!msg_qq.empty()) {
+            tray_message(wtitle.c_str(), msg_qq.front().c_str());
+            msg_qq.pop();
         }
-        SPDLOG_DEBUG("sleep {} seconds", config_.check_interval);
-        std::this_thread::sleep_for(seconds(config_.check_interval));
+        t = (t + 1) % T;
+        std::this_thread::sleep_for(milliseconds(100));
     }
 }
 
 void UESTCWifiHelper::set_signal_handle() {
+#ifdef _DEBUG
     SetConsoleCtrlHandler(exit_helper, TRUE);
+#endif
 }
 
 UESTC_WIFI_HELPER_NS_END
