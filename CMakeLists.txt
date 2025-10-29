@@ -52,8 +52,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL Windows AND MSVC)
 endif()
 
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
-    add_definitions(-DSPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG)
+    add_compile_definitions(_DEBUG)
 endif()
+
+add_definitions(-DSPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG)
 
 add_library(uestc_wifi_lib)
 generate_export_header(
