@@ -7,9 +7,9 @@
 #include "tray.h"
 #include "nlm.hpp"
 #include "uestc_wifi_helper.hpp"
-#ifndef _DEBUG
-#pragma comment(linker, "/subsystem:\"Windows\" /entry:\"mainCRTStartup\"")
-#endif
+// #ifndef _DEBUG
+// #pragma comment(linker, "/subsystem:\"Windows\" /entry:\"mainCRTStartup\"")
+// #endif
 
 
 namespace {
@@ -53,6 +53,12 @@ UESTC_WIFI_HELPER_NS_BEGIN()
 void UESTCWifiHelper::run() const {
     using namespace nlm;
     using namespace std::chrono;
+
+#ifdef _DEBUG
+    // hide console window
+    auto hwnd = GetConsoleWindow();
+    if (hwnd) ShowWindow(hwnd, SW_HIDE);
+#endif
 
     auto coinit = wil::CoInitializeEx_failfast(COINIT_MULTITHREADED);
 
