@@ -49,6 +49,6 @@ int main(int argc, char** argv) {
 
     CLI11_PARSE(app, argc, argv);
 
-    UESTCWifiHelper::set_signal_handle();
+    set_signal_handle();
     UESTCWifiHelper::init().run();
 }

@@ -134,7 +134,7 @@ void UESTCWifiHelper::run() const {
     notify("程序已退出");
 }
 
-void UESTCWifiHelper::set_signal_handle() {
+void set_signal_handle() {
     signal(SIGINT, exit_helper);
     signal(SIGTERM, exit_helper);
 }

@@ -107,7 +107,7 @@ void UESTCWifiHelper::run() const {
     }
 }
 
-void UESTCWifiHelper::set_signal_handle() {
+void set_signal_handle() {
 #ifdef _DEBUG
     SetConsoleCtrlHandler(exit_helper, TRUE);
 #endif

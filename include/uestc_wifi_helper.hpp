@@ -27,7 +27,6 @@ public:
     void run() const;
     void stop() const;
     static UESTCWifiHelper& init(std::string_view config_path = "");
-    static void set_signal_handle();
     void check_once(const std::function<void(std::string_view)>& notify) const;
 
     inline bool is_running() const {
@@ -40,5 +39,7 @@ private:
 
     UESTCWifiHelper(std::string_view config_path);
 };
+
+void set_signal_handle();
 
 UESTC_WIFI_HELPER_NS_END
