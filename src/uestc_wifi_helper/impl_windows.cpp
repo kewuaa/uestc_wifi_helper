@@ -28,7 +28,6 @@ void quit_cb(struct tray_menu_item* item) {
     tray_exit();
 }
 
-#ifdef _DEBUG
 BOOL WINAPI exit_helper(DWORD sig) {
     auto wtitle = to_wstring(UESTCWifiHelper::TITLE);
     switch (sig) {
@@ -43,7 +42,6 @@ BOOL WINAPI exit_helper(DWORD sig) {
         default: return FALSE;
     }
 }
-#endif
 
 }
 
@@ -108,9 +106,7 @@ void UESTCWifiHelper::run() const {
 }
 
 void set_signal_handle() {
-#ifdef _DEBUG
     SetConsoleCtrlHandler(exit_helper, TRUE);
-#endif
 }
 
 UESTC_WIFI_HELPER_NS_END
