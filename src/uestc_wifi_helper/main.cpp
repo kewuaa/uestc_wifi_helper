@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
 
     if (!fs::exists(config_path)) {
         {
-            std::ofstream f(config_path);
+            std::ofstream f(config_path, std::ios::binary);
             f << b::embed<"template.toml">().str();
         }
         if (!utils::open_with_default_app(config_path)) {
