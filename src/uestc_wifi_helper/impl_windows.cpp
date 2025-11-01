@@ -54,7 +54,7 @@ void UESTCWifiHelper::run() const {
     using namespace nlm;
     using namespace std::chrono;
 
-#ifdef _DEBUG
+#ifndef _DEBUG
     // hide console window
     auto hwnd = GetConsoleWindow();
     if (hwnd) ShowWindow(hwnd, SW_HIDE);
