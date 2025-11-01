@@ -13,7 +13,7 @@ using namespace UESTC_WIFI_HELPER_NS;
 
 int main(int argc, char** argv) {
     auto home = utils::home_path();
-    std::string config_path { home/"uestc_wifi.toml" };
+    std::string config_path { (home/"uestc_wifi.toml").string() };
 
     CLI::App app;
     argv = app.ensure_utf8(argv);
