@@ -8,9 +8,18 @@
 
 # 下载
 
-可在[发布页面](https://github.com/kewuaa/uestc_wifi_helper/releases)下载可执行文件，分为纯命令行程序和托盘程序。
+可在[发布页面](https://github.com/kewuaa/uestc_wifi_helper/releases)下载可执行文件，支持windows和linux。
 
-linux下的托盘程序依赖qt6pas
+有两个程序`uestc_wifi`和`uestc_wifi_helper`。
+
+# 编译
+
+使用cmake对项目进行构建，通过CPM管理依赖，windows下建议使用msvc进行编译。
+
+```
+cmake -B build -S .
+cmake --build build
+```
 
 # 配置
 
@@ -22,18 +31,24 @@ Windows 和 Linux 下的用户目录分别为 `C:\Users\用户名` 和 `/home/�
 
 # 使用
 
-## 托盘程序
+## uestc_wifi
 
-`check_interval`为正数时，将运行一个后台程序，间隔`check_interval`秒检查一次网络连接情况
+```
+uestc_wifi -h
+```
 
-`check_interval`为非正数时，静默检查一次网络连接情况，结果保存至日志文件中
+`uestc_wifi`为命令行程序，可以用于简单的一次检查用户是否在线，不在线则进行登陆。
+
+## uestc_wifi_helper
+
+```
+uestc_wifi_helper -h
+```
+
+`uestc_wifi_helper`在linux为一个后台服务，通过dbus和NetworkManager通信，监听网络状态变更事件，网络连接断开时会停止检测。
+
+在windows下为一个托盘程序，通过Network List Manager监听网络变更事件，同样在网络断开连接时会停止检测。
+
+都会在后台间隔`check_interval`秒检查一次网络连接情况，检查到用户下线时，将会使用配置文件中的信息进行登陆。
 
 可自行设置开机自启动或其他方式。
-
-## 命令行程序
-
-```
-uestc_wifi_helper_cli <username> <password> <network_operator> [-l]
-```
-
-前三个参数和配置文件中含义一致，不加`-l`会将结果输出至标准输出，加`-l`会输出至日志文件中。
