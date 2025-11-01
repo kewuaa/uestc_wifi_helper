@@ -1,3 +1,7 @@
+########################
+# 初次运行请进行配置
+########################
+
 username = "your username"
 
 password = "your password"
@@ -11,6 +15,5 @@ password = "your password"
 network_operator = 0
 
 # 后台程序检查网络状况的间隔时长
-# 单位为秒，整数
-# 设置为非正数时程序单独运行一次
+# 单位为秒，正整数
 check_interval = 1

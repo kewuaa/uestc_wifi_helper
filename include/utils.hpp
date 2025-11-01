@@ -31,4 +31,18 @@ inline fs::path home_path() {
     );
 }
 
+inline bool open_with_default_app(std::string_view path) {
+    return std::system(
+        std::format(
+#ifdef __linux__
+            "xdg-open"
+#elifdef _WIN32
+            "notepad.exe"
+#endif
+            " \"{}\"",
+            path
+        ).c_str()
+    ) == 0;
+}
+
 UESTC_WIFI_HELPER_NS_END

@@ -105,6 +105,8 @@ if (UESTC_WIFI_ONLY)
     return()
 endif()
 
+CPMAddPackage("gh:batterycenter/embed@1.2.19")
+
 if (CMAKE_SYSTEM_NAME STREQUAL Linux)
     CPMAddPackage("gh:Kistler-Group/sdbus-cpp@2.1.0")
 elseif (CMAKE_SYSTEM_NAME STREQUAL Windows)
@@ -147,3 +149,4 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL Windows)
     )
     target_link_libraries(uestc_wifi_helper PRIVATE WIL::WIL)
 endif()
+b_embed(uestc_wifi_helper template.toml)
