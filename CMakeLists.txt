@@ -38,14 +38,10 @@ CPMAddPackage(
     OPTIONS "CRYPTOPP_BUILD_TESTING OFF"
 )
 
-find_package(spdlog)
-if (NOT spdlog_FOUND)
-    message(STATUS "spdlog not found in system, download it by CPM")
-    CPMAddPackage(
+CPMAddPackage(
         URI "gh:gabime/spdlog@1.16.0"
         OPTIONS "SPDLOG_USE_STD_FORMAT TRUE"
-    )
-endif()
+)
 
 
 if (CMAKE_SYSTEM_NAME STREQUAL Windows AND MSVC)
