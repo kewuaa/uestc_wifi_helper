@@ -1,3 +1,4 @@
+#define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
 #include <chrono>
 #include <utility>
 
@@ -165,7 +166,7 @@ struct UESTCWifi::impl {
             auto info = "{SRBX1}"
                 + encrypt::base64_encode(encrypt::xencode(data.dump(), token));
 
-            auto hmacmd5 = CryptoPP::HMAC<CryptoPP::MD5>((const CryptoPP::byte*)token.data(), token.size());
+            auto hmacmd5 = CryptoPP::HMAC<CryptoPP::Weak::MD5>((const CryptoPP::byte*)token.data(), token.size());
             auto password_md5 = encrypt::encrypt(hmacmd5, password);
 
             auto chksum_str = token + username_
