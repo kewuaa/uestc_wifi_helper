@@ -103,7 +103,7 @@ struct UESTCWifi::impl {
             }
         }
         headers.emplace("Content-Type", "application/x-www-form-urlencoded");
-        headers.emplace("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36");
+        headers.emplace("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36");
         headers.emplace("Host", target_ip);
         headers.emplace("Cookie", "lang=zh-CN");
     }
