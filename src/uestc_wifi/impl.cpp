@@ -48,7 +48,7 @@ std::string timestamp() {
 
 auto response(std::string_view body) {
     if (!body.starts_with(CALLBACK_STRING)) {
-        throw std::runtime_error("invalid response");
+        throw std::runtime_error(std::format("invalid response: \"{}\"", body));
     }
     auto json = json::parse(
         body.substr(
