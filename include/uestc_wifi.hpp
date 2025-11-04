@@ -25,6 +25,7 @@ public:
 
     enum class Error {
         HttplibError,
+        HttpRedirect,
         IncorrectUsernameOrPassword,
         DeviceWithinScope,
         NetworkConnectionTimeout,
@@ -33,6 +34,7 @@ public:
     static constexpr const char* translate_error(Error err) {
         constexpr const char* infos[] = {
             "httplib error",
+            "http request triggers redirect",
             "Incorrect username or password",
             "The device is not within the scope of certification",
             "Network connection timed out, please try again later",

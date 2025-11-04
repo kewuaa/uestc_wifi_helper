@@ -19,6 +19,10 @@ using namespace uestc_wifi_helper;
 #define CHECK_RESULT(result) if (!result) {                                \
     SPDLOG_ERROR("httplib error: {}", httplib::to_string(result.error())); \
     return std::unexpected(UESTCWifi::Error::HttplibError);                \
+} else if (auto status = result->status; status < 400 && status >= 300) {  \
+    auto redirect_url = result->headers.find("Location");                  \
+    SPDLOG_ERROR("request redirect to \"{}\"", redirect_url->second);      \
+    return std::unexpected(UESTCWifi::Error::HttpRedirect);                \
 }
 
 constexpr const char CALLBACK_STRING[] = "jQuery112409729861590799633_1698107269291";
