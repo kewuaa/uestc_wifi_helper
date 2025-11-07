@@ -98,6 +98,10 @@ void UESTCWifiHelper::check_once(const std::function<void(std::string_view)>& no
                 break;
             } else return;
         }
+        case UESTCWifi::Error::UnexpectedLoginError: {
+            msg = "出现预期外的登陆错误";
+            break;
+        }
         case UESTCWifi::Error::HttpRedirect:
         case UESTCWifi::Error::NetworkConnectionTimeout: return;
     }

@@ -30,6 +30,7 @@ public:
         DeviceWithinScope,
         NetworkConnectionTimeout,
         AuthRequestsFrequently,
+        UnexpectedLoginError,
     };
     static constexpr const char* translate_error(Error err) {
         constexpr const char* infos[] = {
@@ -39,6 +40,7 @@ public:
             "The device is not within the scope of certification",
             "Network connection timed out, please try again later",
             "Authorization request frequently",
+            "Got unexpected login error"
         };
         return infos[*magic_enum::enum_index(err)];
     }

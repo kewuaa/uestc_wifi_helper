@@ -210,11 +210,12 @@ struct UESTCWifi::impl {
                 } else if (error_msg == "CHALLENGE failed, BAS respond timeout.") {
                     return std::unexpected(Error::NetworkConnectionTimeout);
                 } else {
-                    throw new std::runtime_error(std::format(
+                    SPDLOG_ERROR(
                         "login failed: error: {}, error_msg: {}",
                         error.get<std::string>(),
                         error_msg
-                    ));
+                    );
+                    return std::unexpected(Error::UnexpectedLoginError);
                 }
             }
             return {};
