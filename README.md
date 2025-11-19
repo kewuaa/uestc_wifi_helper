@@ -34,16 +34,22 @@ Windows 和 Linux 下的用户目录分别为 `C:\Users\用户名` 和 `/home/�
 ## uestc_wifi
 
 ```
-uestc_wifi -h
+uestc_wifi -n 用户名 -p 密码 -o 运营商
 ```
 
-`uestc_wifi`为命令行程序，可以用于简单的一次检查用户是否在线，不在线则进行登陆。
+`uestc_wifi -h`查看可指定的参数。
+
+运营商如下：
+- CTCC：寝室电信网
+- CMCC：寝室移动网
+- UESTC：教研室网
+- CTCC_UESTC：教研室电信网
+
+用于简单的一次检查用户是否在线，不在线则进行登陆。
 
 ## uestc_wifi_helper
 
-```
-uestc_wifi_helper -h
-```
+一般直接运行`uestc_wifi_helper`即可，`-h`查看可指定的参数。
 
 `uestc_wifi_helper`在linux为一个后台服务，通过dbus和NetworkManager通信，监听网络状态变更事件，网络连接断开时会停止检测。
 
